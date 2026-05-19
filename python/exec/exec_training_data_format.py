@@ -11,7 +11,8 @@ path_to_json_training_data = os.path.join('..', 'json')
 
 data_trainer = TrainingDataFormatter(path_to_csv_training_data)
 data_trainer.export(path_to_json_training_data)
-print(f'--- Successfully exported JSON training data under {path_to_json_training_data}/ ---')
+print(
+    f'--- Successfully exported JSON training data under {path_to_json_training_data}/ ---')
 
 pycaches = glob.glob(os.path.join('.', '**', '__pycache__'), recursive=True)
 for pycache in pycaches:
