@@ -5,6 +5,7 @@ ruby-on-rails/.gitignore
 ruby-on-rails/log/
 ruby-on-rails/sig/generated/vendor/
 ruby-on-rails/tmp/
+ruby-on-rails/vendor/
 
 # Ruby
 ruby/test/tmp
