@@ -13,21 +13,21 @@ $ pip install -r requirements.txt
 ### 3-1. Export the accuracy score report to Botpress
 
 ```command
-$ python /exec/exec_accuracy_check.py
+$ invoke export_accuracy_score_report
 --- Successfully exported accuracy score chart under ../csv/ ---
 ```
 
 ### 3-2. Convert the CSV test data to JSON format and export
 
 ```command
-$ python ./exec/exec_training_data_format.py
+$ invoke format_test_data
 --- Successfully exported JSON training data under ../json/ ---
 ```
 
 ## 4. Unit Test
 
 ```command
-$ pytest .
+$ invoke
 ============================= test session starts ==============================
 platform linux -- Python 3.14.5, pytest-9.0.3, pluggy-1.6.0
 rootdir: botpress-accuracy-reporters/python
@@ -44,8 +44,6 @@ test/test_training_data_formatter.py .                                   [100%]
 
 ```command
 $ flake8 .
-./exec/exec_accuracy_check.py:21:80: E501 line too long (96 > 79 characters)
-./exec/exec_training_data_format.py:15:80: E501 line too long (92 > 79 characters)
 ./src/accuracy_reporter.py:24:80: E501 line too long (86 > 79 characters)
 ./src/queries/accuracy_check_query.py:24:80: E501 line too long (127 > 79 characters)
 ./test/queries/test_accuracy_check_query.py:19:80: E501 line too long (111 > 79 characters)
