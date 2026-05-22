@@ -23,7 +23,8 @@ class AccuracyReporter:
         self.accuracy_check_query = AccuracyCheckQuery(
             self.scheme, self.host, self.bot_id, self.user_id, self.path_to_test_data)
         self.res_bodies = self.accuracy_check_query.res_bodies()
-        self.csv_chart_drawer = CsvChartDrawer(self.path_to_test_data, self.res_bodies)
+        self.csv_chart_drawer = CsvChartDrawer(
+            self.path_to_test_data, self.res_bodies)
 
     def run(self, path_to_accuracy_score_chart: str) -> None:
         with open(self.__filename__(path_to_accuracy_score_chart), 'w') as f:
