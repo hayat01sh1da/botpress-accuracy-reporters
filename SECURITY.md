@@ -8,8 +8,8 @@
 | Stack / Component       | Version(s) / Tooling               | Notes                                                                                                          |
 | ----------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | OS baseline             | WSL (Ubuntu 25.10)                 | Shared environment across tracks.                                                                              |
-| Ruby on Rails exercises | Ruby 4.0.4 (`.ruby-version`)       | Bundler-managed gems per sample app; keep Rails/Botpress gems current.                                         |
-| Ruby CLI helpers        | Ruby 4.0.4                         | Depend only on the Ruby standard library.                                                                      |
+| Ruby on Rails exercises | Ruby 4.0.5 (`.ruby-version`)       | Bundler-managed gems per sample app; keep Rails/Botpress gems current.                                         |
+| Ruby CLI helpers        | Ruby 4.0.5                         | Depend only on the Ruby standard library.                                                                      |
 | Python automation       | CPython 3.14.5 (`.python-version`) | Scripts currently rely on the Python standard library; add new packages via per-folder requirements if needed. |
 
 ## Backward Compatibility
