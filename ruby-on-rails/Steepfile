@@ -7,7 +7,7 @@ D = Steep::Diagnostic
 # from the RBS collection and reference gem-internal types that do not resolve
 # (RBS::UnknownTypeName). They are gitignored noise, so load every generated
 # subtree except `vendor/`.
-non_vendor = ->(root) do
+non_vendor = lambda do |root|
   Dir.glob("#{root}/*").reject { |path| File.basename(path) == 'vendor' }.sort
 end
 

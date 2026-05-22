@@ -1,9 +1,9 @@
-FROM ruby:4.0.4
+FROM ruby:4.0.5
 
 # Packages
 RUN apt-get update && apt-get install -y curl build-essential libpq-dev libvips libvips-dev vim tree
 
-ARG BUNDLER_VERSION=4.0.11
+ARG BUNDLER_VERSION=4.0.12
 
 WORKDIR /tmp
 
