@@ -1,5 +1,8 @@
 # Generated from app/helpers/score_chart_helper.rb with RBS::Inline
 
+# View helpers for rendering the accuracy score chart and its annotations.
 module ScoreChartHelper
+  ACCURACY_TIERS: untyped
+
   def accuracy: (row: untyped) -> untyped
 end

@@ -1,5 +1,7 @@
 # Generated from src/accuracy_reporter.rb with RBS::Inline
 
+# Exports an accuracy score chart by querying a Botpress endpoint with the
+# rows of a test-data CSV and writing the per-question scores out as CSV.
 class AccuracyReporter
   # @rbs scheme: String
   # @rbs host: String

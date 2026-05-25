@@ -1,6 +1,8 @@
 # Generated from src/lib/format.rb with RBS::Inline
 
 module Lib
+  # Converts a CSV of question/answer pairs into the JSON shape Botpress
+  # expects for Q&A training data.
   module Format
     # @rbs array: Array[untyped]
     # @rbs return: Hash[Symbol, untyped]
@@ -10,5 +12,16 @@ module Lib
     # @rbs array: Array[untyped]
     # @rbs return: String
     def to_json: (path_to_csv_training_data: String, ?array: Array[untyped]) -> String
+
+    private
+
+    # @rbs format: Hash[Symbol, untyped]
+    # @rbs training_datum: CSV::Row
+    # @rbs return: Hash[Symbol, untyped]
+    def merge_training_datum: (Hash[Symbol, untyped] format, CSV::Row training_datum) -> Hash[Symbol, untyped]
+
+    # @rbs training_datum: CSV::Row
+    # @rbs return: Hash[Symbol, untyped]
+    def start_new_format: (CSV::Row training_datum) -> Hash[Symbol, untyped]
   end
 end

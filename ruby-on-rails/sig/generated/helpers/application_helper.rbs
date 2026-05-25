@@ -1,4 +1,5 @@
 # Generated from app/helpers/application_helper.rb with RBS::Inline
 
+# Helpers available to every view in the app.
 module ApplicationHelper
 end
