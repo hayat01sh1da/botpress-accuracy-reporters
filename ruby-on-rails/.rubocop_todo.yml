@@ -11,8 +11,8 @@
 # Prefixes: when, with, without
 RSpec/ContextWording:
   Exclude:
-    - 'spec/request/score_chart_spec.rb'
-    - 'spec/request/training_data_spec.rb'
+    - 'spec/requests/score_chart_controller_spec.rb'
+    - 'spec/requests/training_data_controller_spec.rb'
 
 # Offense count: 3
 # Configuration parameters: CountAsOne.
@@ -26,17 +26,8 @@ RSpec/MultipleExpectations:
 # Offense count: 4
 RSpec/PendingWithoutReason:
   Exclude:
-    - 'spec/request/score_chart_spec.rb'
-    - 'spec/request/training_data_spec.rb'
-
-# Offense count: 3
-# Configuration parameters: CustomTransform, IgnoreMethods, IgnoreMetadata, InflectorPath, EnforcedInflector.
-# SupportedInflectors: default, active_support
-RSpec/SpecFilePathFormat:
-  Exclude:
-    - 'spec/request/score_chart_spec.rb'
-    - 'spec/request/top_spec.rb'
-    - 'spec/request/training_data_spec.rb'
+    - 'spec/requests/score_chart_controller_spec.rb'
+    - 'spec/requests/training_data_controller_spec.rb'
 
 # Offense count: 1
 Rails/Exit:
