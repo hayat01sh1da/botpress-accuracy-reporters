@@ -6,6 +6,8 @@ require 'csv'
 require 'json'
 
 module Queries
+  # Sends each question from a test-data CSV to a Botpress /converse endpoint
+  # and returns the parsed response bodies.
   class AccuracyCheckQuery
     INVALID_PATTERNS = %r![\\'|`\^"<>)(}{\]\[;/?:@&=+$,%\# ]!
 

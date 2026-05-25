@@ -4,6 +4,8 @@
 require 'csv'
 
 module Lib
+  # Builds a CSV chart that pairs each test question with the confidence
+  # scores returned by Botpress for every candidate answer.
   class CsvChartDrawer
     # @rbs path_to_test_data: String
     # @rbs res_bodies: Array[Hash[String, untyped]]

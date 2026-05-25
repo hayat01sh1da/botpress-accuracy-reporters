@@ -4,6 +4,8 @@
 require_relative 'queries/accuracy_check_query'
 require_relative 'lib/csv_chart_drawer'
 
+# Exports an accuracy score chart by querying a Botpress endpoint with the
+# rows of a test-data CSV and writing the per-question scores out as CSV.
 class AccuracyReporter
   # @rbs scheme: String
   # @rbs host: String

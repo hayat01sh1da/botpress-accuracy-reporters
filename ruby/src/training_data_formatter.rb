@@ -3,6 +3,8 @@
 
 require_relative 'lib/format'
 
+# Reads a CSV training-data file, converts it through Lib::Format, and writes
+# the result as a timestamped JSON file under the requested directory.
 class TrainingDataFormatter
   include ::Lib::Format
 
