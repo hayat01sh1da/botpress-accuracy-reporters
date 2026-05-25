@@ -4,7 +4,7 @@
 require 'rails_helper'
 require 'csv'
 
-RSpec.describe ScoreChartController, type: :request do
+RSpec.describe ScoreChartController do
   describe '#new' do
     before do
       get new_score_chart_path

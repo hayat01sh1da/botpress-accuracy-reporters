@@ -4,7 +4,7 @@
 require 'rails_helper'
 require 'csv'
 
-RSpec.describe TrainingDataController, type: :request do
+RSpec.describe TrainingDataController do
   describe '#new' do
     before do
       get new_training_data_path
