@@ -59,7 +59,7 @@ class ScoreChartController < ApplicationController
       test_data: @score_chart_form.test_data
     )
   rescue SocketError
-    flash[:alert] = 'Host is invalid'
+    flash[:alert] = I18n.t('score_chart.errors.invalid_host')
     render :new
     nil
   end
@@ -67,7 +67,7 @@ class ScoreChartController < ApplicationController
   def draw_chart(res_bodies)
     CsvChartDrawer.run(path_to_test_data: @score_chart_form.test_data, res_bodies:)
   rescue NoMethodError
-    flash[:alert] = 'BotID, UserID or AccessToken is invalid'
+    flash[:alert] = I18n.t('score_chart.errors.invalid_credentials')
     render :new
     nil
   end
