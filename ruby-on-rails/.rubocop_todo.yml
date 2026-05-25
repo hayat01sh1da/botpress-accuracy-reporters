@@ -6,14 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 4
-# Configuration parameters: Prefixes, AllowedPatterns.
-# Prefixes: when, with, without
-RSpec/ContextWording:
-  Exclude:
-    - 'spec/requests/score_chart_controller_spec.rb'
-    - 'spec/requests/training_data_controller_spec.rb'
-
 # Offense count: 3
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:

@@ -35,7 +35,7 @@ RSpec.describe ScoreChartController, type: :request do
       post score_chart_path, params: params
     end
 
-    context 'if all required params are passed' do
+    context 'when all required params are passed' do
       let(:params) do
         {
           scheme: 'https',
@@ -56,7 +56,7 @@ RSpec.describe ScoreChartController, type: :request do
       end
     end
 
-    context 'if NO required params are passed' do
+    context 'when NO required params are passed' do
       let(:params) do
         {
           scheme: nil,

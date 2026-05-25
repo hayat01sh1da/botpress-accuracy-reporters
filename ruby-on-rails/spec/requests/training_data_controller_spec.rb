@@ -30,7 +30,7 @@ RSpec.describe TrainingDataController, type: :request do
       post training_data_download_path, params: params
     end
 
-    context 'if JSON training data file is selected' do
+    context 'when a JSON training data file is selected' do
       let(:params)           { { training_data: nil } }
       let(:postfix)          { DateTime.current.strftime('%F%T').gsub(/[:-]/, '') }
       let(:file_to_download) { "training_data_#{postfix}.json" }
@@ -44,7 +44,7 @@ RSpec.describe TrainingDataController, type: :request do
       end
     end
 
-    context 'if NO JSON training data file is selected' do
+    context 'when NO JSON training data file is selected' do
       let(:params) { { training_data: nil } }
 
       it 'returns a successful status code' do
