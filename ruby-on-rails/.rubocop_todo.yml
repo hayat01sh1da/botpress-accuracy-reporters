@@ -58,23 +58,6 @@ Rails/I18nLocaleTexts:
   Exclude:
     - 'app/controllers/score_chart_controller.rb'
 
-# Offense count: 13
-# Configuration parameters: AllowedConstants.
-Style/Documentation:
-  Exclude:
-    - 'app/controllers/concerns/chart_manager.rb'
-    - 'app/controllers/concerns/format.rb'
-    - 'app/controllers/score_chart_controller.rb'
-    - 'app/controllers/top_controller.rb'
-    - 'app/controllers/training_data_controller.rb'
-    - 'app/forms/score_chart_form.rb'
-    - 'app/forms/training_data_form.rb'
-    - 'app/helpers/application_helper.rb'
-    - 'app/helpers/score_chart_helper.rb'
-    - 'app/lib/csv_chart_drawer.rb'
-    - 'app/queries/accuracy_check_query.rb'
-    - 'config/application.rb'
-
 # Offense count: 16
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowHeredoc, AllowURI, AllowQualifiedName, URISchemes, AllowRBSInlineAnnotation, AllowCopDirectives, AllowedPatterns, SplitStrings.

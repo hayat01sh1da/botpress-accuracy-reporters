@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
+# View helpers for rendering the accuracy score chart and its annotations.
 module ScoreChartHelper
   def accuracy(row:)
     return unless row.include?('%')

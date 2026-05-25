@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
+# Handles the upload/draw/download flow for the Botpress accuracy score chart.
 class ScoreChartController < ApplicationController
   include ChartManager
 

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
+# Sends each question from a test-data CSV to a Botpress /converse endpoint
+# and returns the parsed response bodies.
 class AccuracyCheckQuery
   INVALID_PATTERNS = %r![\\'|`\^"<>)(}{\]\[;/?:@&=+$,%\# ]!
 

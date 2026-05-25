@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
+# Handles the CSV-to-JSON training-data conversion download flow.
 class TrainingDataController < ApplicationController
   include Format
 

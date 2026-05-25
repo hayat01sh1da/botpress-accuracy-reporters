@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
+# Converts a CSV of question/answer pairs into the JSON shape Botpress
+# expects for Q&A training data.
 module Format
   # @rbs array: Array[untyped]
   # @rbs return: Hash[Symbol, untyped]

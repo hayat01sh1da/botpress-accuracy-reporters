@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
+# Reads, writes, and cleans accuracy-score CSV charts under tmp/downloads.
 module ChartManager
   PATH = Rails.root.join('tmp/downloads')
 

@@ -21,6 +21,7 @@ require 'rails/test_unit/railtie'
 Bundler.require(*Rails.groups)
 
 module BotpressToolKit
+  # Rails application class for the Botpress Tool Kit.
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1

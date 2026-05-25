@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 # rbs_inline: enabled
 
+# Form object validating the params for the score-chart create flow.
 class ScoreChartForm < ApplicationForm
   attr_accessor :scheme, :host, :bot_id, :user_id, :access_token, :test_data
 
