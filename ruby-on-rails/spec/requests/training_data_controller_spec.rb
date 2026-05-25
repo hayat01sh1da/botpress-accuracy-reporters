@@ -35,11 +35,11 @@ RSpec.describe TrainingDataController, type: :request do
       let(:postfix)          { DateTime.current.strftime('%F%T').gsub(/[:-]/, '') }
       let(:file_to_download) { "training_data_#{postfix}.json" }
 
-      xit 'returns a successful status code' do
+      it 'returns a successful status code', skip: 'Pending until upload fixture wiring is in place' do
         expect(response).to have_http_status(:ok)
       end
 
-      xit 'returns a JSON training data download modal' do
+      it 'returns a JSON training data download modal', skip: 'Pending until upload fixture wiring is in place' do
         expect(response.header['Content-Disposition']).to eq("attachment; filename=\"#{file_to_download}\"; filename*=UTF-8''#{file_to_download}")
       end
     end

@@ -47,11 +47,11 @@ RSpec.describe ScoreChartController, type: :request do
         }
       end
 
-      xit 'returns a successful status code' do
+      it 'returns a successful status code', skip: 'Pending until a Botpress test endpoint is available' do
         expect(response).to have_http_status(:ok)
       end
 
-      xit 'returns a CSV score data download modal' do
+      it 'returns a CSV score data download modal', skip: 'Pending until a Botpress test endpoint is available' do
         expect(response.body).to include(nil)
       end
     end

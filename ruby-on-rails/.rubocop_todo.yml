@@ -23,12 +23,6 @@ RSpec/ExampleLength:
 RSpec/MultipleExpectations:
   Max: 10
 
-# Offense count: 4
-RSpec/PendingWithoutReason:
-  Exclude:
-    - 'spec/requests/score_chart_controller_spec.rb'
-    - 'spec/requests/training_data_controller_spec.rb'
-
 # Offense count: 1
 Rails/Exit:
   Exclude:
