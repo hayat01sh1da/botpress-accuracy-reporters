@@ -32,7 +32,8 @@ class AccuracyReporter
     @user_id                      = user_id
     @path_to_test_data            = path_to_test_data
     @path_to_accuracy_score_chart = path_to_accuracy_score_chart
-    @res_bodies                   = ::Queries::AccuracyCheckQuery.request!(scheme:, host:, bot_id:, user_id:, path_to_test_data:)
+    @res_bodies                   = ::Queries::AccuracyCheckQuery.request!(scheme:, host:, bot_id:, user_id:,
+                                                                           path_to_test_data:)
   end
 
   # @rbs return: void
