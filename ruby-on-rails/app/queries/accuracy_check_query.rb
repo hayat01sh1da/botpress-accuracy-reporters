@@ -1,8 +1,8 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 class AccuracyCheckQuery
-
-  INVALID_PATTERNS = /[\\\'\|\`\^\"\<\>\)\(\}\{\]\[\;\/\?\:\@\&\=\+\$\,\%\# ]/
+  INVALID_PATTERNS = %r{[\\'|`\^"<>)(}{\]\[;/?:@&=+$,%\# ]}
 
   # @rbs scheme: String
   # @rbs host: String
@@ -56,11 +56,11 @@ class AccuracyCheckQuery
 
   # @rbs return: Array[Net::HTTPResponse]
   def request
-    test_data['Question'].map { |question|
+    test_data['Question'].map do |question|
       req.set_form_data(type: :text, text: question)
       net_http         = Net::HTTP.new(uri.host.to_s, uri.port)
       net_http.use_ssl = true if uri.to_s.include?('https')
       net_http.start { |http| http.request(req) }
-    }
+    end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 class TrainingDataController < ApplicationController
@@ -25,6 +26,6 @@ class TrainingDataController < ApplicationController
   end
 
   def filename
-    "training_data_#{DateTime.current.strftime('%F%T').gsub(/[:\-]/, '')}.json"
+    "training_data_#{DateTime.current.strftime('%F%T').gsub(/[:-]/, '')}.json"
   end
 end

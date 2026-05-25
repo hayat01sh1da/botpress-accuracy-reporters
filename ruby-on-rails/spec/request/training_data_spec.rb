@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'rails_helper'
@@ -31,7 +32,7 @@ RSpec.describe TrainingDataController, type: :request do
 
     context 'if JSON training data file is selected' do
       let(:params)           { { training_data: nil } }
-      let(:postfix)          { DateTime.current.strftime('%F%T').gsub(/[:\-]/, '') }
+      let(:postfix)          { DateTime.current.strftime('%F%T').gsub(/[:-]/, '') }
       let(:file_to_download) { "training_data_#{postfix}.json" }
 
       xit 'returns a successful status code' do

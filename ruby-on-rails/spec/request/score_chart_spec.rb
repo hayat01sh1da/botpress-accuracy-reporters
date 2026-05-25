@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'rails_helper'
@@ -35,16 +36,16 @@ RSpec.describe ScoreChartController, type: :request do
     end
 
     context 'if all required params are passed' do
-      let(:params) {
+      let(:params) do
         {
           scheme: 'https',
           host: 'sample.com',
           bot: 'sample_bot',
           user: 'sample_user',
-          access_token: '1'.upto('10').to_a.then { it + 'A'.upto('Z').to_a }.then { it + 'a'.upto('z').to_a }.sample(64).join(''),
+          access_token: '1'.upto('10').to_a.then { it + 'A'.upto('Z').to_a }.then { it + 'a'.upto('z').to_a }.sample(64).join,
           test_data: nil
         }
-      }
+      end
 
       xit 'returns a successful status code' do
         expect(response).to have_http_status(:ok)
@@ -56,7 +57,7 @@ RSpec.describe ScoreChartController, type: :request do
     end
 
     context 'if NO required params are passed' do
-      let(:params) {
+      let(:params) do
         {
           scheme: nil,
           host: nil,
@@ -65,7 +66,7 @@ RSpec.describe ScoreChartController, type: :request do
           access_token: nil,
           test_data: nil
         }
-      }
+      end
 
       it 'returns a successful status code' do
         expect(response).to have_http_status(:ok)
@@ -84,16 +85,16 @@ RSpec.describe ScoreChartController, type: :request do
   end
 
   describe '#draw' do
-    let(:source)      { Rails.root.join('csv', 'accuracy_score_chart_20211130220255.csv') }
-    let(:dirname)     { Rails.root.join('tmp', 'downloads') }
+    let(:source)      { Rails.root.join('csv/accuracy_score_chart_20211130220255.csv') }
+    let(:dirname)     { Rails.root.join('tmp/downloads') }
     let(:destination) { Rails.root.join(dirname, 'accuracy_score_chart_20211130220255.csv') }
 
     before do
       get score_chart_draw_path
     end
 
-    around(:example) do |example|
-      FileUtils.mkdir_p(dirname) unless Dir.exist?(dirname)
+    around do |example|
+      FileUtils.mkdir_p(dirname)
       FileUtils.copy(source, destination)
       example.run
       FileUtils.rm_rf(destination)
@@ -123,18 +124,18 @@ RSpec.describe ScoreChartController, type: :request do
   end
 
   describe '#download' do
-    let(:source)           { Rails.root.join('csv', 'accuracy_score_chart_20211130220255.csv') }
-    let(:dirname)          { Rails.root.join('tmp', 'downloads') }
+    let(:source)           { Rails.root.join('csv/accuracy_score_chart_20211130220255.csv') }
+    let(:dirname)          { Rails.root.join('tmp/downloads') }
     let(:destination)      { Rails.root.join(dirname, 'accuracy_score_chart_20211130220255.csv') }
-    let(:postfix)          { DateTime.current.strftime('%F%T').gsub(/[:\-]/, '') }
+    let(:postfix)          { DateTime.current.strftime('%F%T').gsub(/[:-]/, '') }
     let(:file_to_download) { "accuracy_score_chart_#{postfix}.csv" }
 
     before do
       get score_chart_download_path
     end
 
-    around(:example) do |example|
-      FileUtils.mkdir_p(dirname) unless Dir.exist?(dirname)
+    around do |example|
+      FileUtils.mkdir_p(dirname)
       FileUtils.copy(source, destination)
       example.run
       FileUtils.rm_rf(destination)

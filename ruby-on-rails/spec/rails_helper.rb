@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
@@ -7,7 +8,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -24,7 +25,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[Rails.root.join('spec', 'helpers', '**', '*.rb')].each { |f| require f }
+Rails.root.glob('spec/helpers/**/*.rb').each { |f| require f }
 
 RSpec.configure do |config|
   # RSpec Rails can automatically mix in different behaviours to your tests

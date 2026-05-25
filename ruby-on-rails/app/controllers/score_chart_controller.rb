@@ -1,9 +1,11 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 class ScoreChartController < ApplicationController
   include ChartManager
+
   before_action :clear_tmp_charts, only: [:new]
-  before_action :redirect_to_new_score_chart_url, only: [:draw, :download]
+  before_action :redirect_to_new_score_chart_url, only: %i[draw download]
 
   # GET: /score_chart/new
   def new
@@ -47,7 +49,7 @@ class ScoreChartController < ApplicationController
     @chart = matrix_chart
   end
 
-  #GET: /score_chart/download
+  # GET: /score_chart/download
   def download
     send_file(tmp_chart, filename:)
   end
@@ -59,7 +61,7 @@ class ScoreChartController < ApplicationController
   end
 
   def filename
-    "accuracy_score_chart_#{DateTime.current.strftime('%F%T').gsub(/[:\-]/, '')}.csv"
+    "accuracy_score_chart_#{DateTime.current.strftime('%F%T').gsub(/[:-]/, '')}.csv"
   end
 
   def redirect_to_new_score_chart_url
