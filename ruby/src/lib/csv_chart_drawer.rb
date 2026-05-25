@@ -42,28 +42,29 @@ module Lib
     def score_tables
       res_bodies.map do |res_body|
         (0...res_body['suggestions'].length).map do |index|
-          score_table         = {}
-          answer              = res_body['suggestions'][index]['payloads'][0]['text']
-          score               = res_body['suggestions'][index]['confidence']
-          score_table[answer] = score
-          score_table
+          answer = res_body['suggestions'][index]['payloads'][0]['text']
+          score  = res_body['suggestions'][index]['confidence']
+          { answer => score }
         end
       end
     end
 
     # @rbs return: Array[Array[String]]
     def rows
-      score_tables.map do |score_table|
-        scores = []
-        scores.fill('0.0%', 0...test_data['Answer'].length)
-        score_table.map do |score_mapping|
-          score_mapping.each do |answer, score|
-            index         = test_data['Answer'].find_index(answer)
-            scores[index] = "#{format('%.1f', score * 100)}%"
-          end
+      score_tables.map { |score_table| score_row_for(score_table) }
+    end
+
+    # @rbs score_table: Array[Hash[String, (String | Float)]]
+    # @rbs return: Array[String]
+    def score_row_for(score_table)
+      scores = Array.new(test_data['Answer'].length, '0.0%')
+      score_table.each do |score_mapping|
+        score_mapping.each do |answer, score|
+          index         = test_data['Answer'].find_index(answer)
+          scores[index] = "#{format('%.1f', score * 100)}%"
         end
-        scores
       end
+      scores
     end
   end
 end
