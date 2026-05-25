@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'minitest/autorun'
@@ -5,7 +6,7 @@ require 'minitest/autorun'
 class ApplicationTest < Minitest::Test
   def setup
     @path_to_tmp_test_dir = File.join('test', 'tmp')
-    Dir.mkdir(path_to_tmp_test_dir) unless Dir.exist?(path_to_tmp_test_dir)
+    FileUtils.mkdir_p(path_to_tmp_test_dir)
   end
 
   def teardown

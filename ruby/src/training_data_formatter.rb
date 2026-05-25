@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
-require_relative './lib/format'
+require_relative 'lib/format'
 
 class TrainingDataFormatter
   include ::Lib::Format
@@ -32,6 +33,6 @@ class TrainingDataFormatter
   # @rbs path_to_json_training_data: String
   # @rbs return: String
   def filename
-    File.join(path_to_json_training_data, "training_data_#{Time.now.strftime('%F%T').gsub(/[:\-]/, '')}.json")
+    File.join(path_to_json_training_data, "training_data_#{Time.now.strftime('%F%T').gsub(/[:-]/, '')}.json")
   end
 end

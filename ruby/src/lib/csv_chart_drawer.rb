@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'csv'
@@ -21,11 +22,11 @@ module Lib
 
     # @rbs return: String
     def run
-      CSV.generate(headers:, write_headers: true) { |csv|
-        rows.each_with_index { |row, index|
+      CSV.generate(headers:, write_headers: true) do |csv|
+        rows.each_with_index do |row, index|
           csv << [test_data[index]['ID'], test_data[index]['Question']].concat(row)
-        }
-      }
+        end
+      end
     end
 
     private
@@ -34,35 +35,35 @@ module Lib
 
     # @rbs return: Array[String]
     def headers
-      ['ID', 'Test_Data'].concat(test_data['ID'])
+      %w[ID Test_Data].concat(test_data['ID'])
     end
 
     # @rbs return: Array[Array[Hash[String, (String | Float)]]]
     def score_tables
-      res_bodies.map { |res_body|
-        (0...res_body['suggestions'].length).map { |index|
-          score_table         = Hash.new
+      res_bodies.map do |res_body|
+        (0...res_body['suggestions'].length).map do |index|
+          score_table         = {}
           answer              = res_body['suggestions'][index]['payloads'][0]['text']
           score               = res_body['suggestions'][index]['confidence']
           score_table[answer] = score
           score_table
-        }
-      }
+        end
+      end
     end
 
     # @rbs return: Array[Array[String]]
     def rows
-      score_tables.map { |score_table|
-        scores = Array.new
+      score_tables.map do |score_table|
+        scores = []
         scores.fill('0.0%', 0...test_data['Answer'].length)
-        score_table.map { |score_mapping|
-          score_mapping.each { |answer, score|
+        score_table.map do |score_mapping|
+          score_mapping.each do |answer, score|
             index         = test_data['Answer'].find_index(answer)
-            scores[index] = "#{sprintf('%.1f', score * 100)}%"
-          }
-        }
+            scores[index] = "#{format('%.1f', score * 100)}%"
+          end
+        end
         scores
-      }
+      end
     end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'csv'
@@ -33,7 +34,7 @@ module Lib
       result = array
       format = template(array: array.dup)
 
-      CSV.foreach(path_to_csv_training_data, headers: true) { |training_datum|
+      CSV.foreach(path_to_csv_training_data, headers: true) do |training_datum|
         if format[:data][:answers][:ja].last == training_datum['Answer']
           format[:data][:questions][:ja] << training_datum['Question']
         else
@@ -44,7 +45,7 @@ module Lib
         end
         format[:data][:questions][:ja].uniq!
         result << format
-      }
+      end
 
       JSON.pretty_generate({ qnas: result.uniq })
     end

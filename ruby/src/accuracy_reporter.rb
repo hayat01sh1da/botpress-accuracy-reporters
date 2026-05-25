@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
-require_relative './queries/accuracy_check_query'
-require_relative './lib/csv_chart_drawer'
+require_relative 'queries/accuracy_check_query'
+require_relative 'lib/csv_chart_drawer'
 
 class AccuracyReporter
   # @rbs scheme: String
@@ -44,6 +45,6 @@ class AccuracyReporter
 
   # @rbs return: String
   def filename
-    File.join(path_to_accuracy_score_chart, "accuracy_score_chart_#{Time.now.strftime('%F%T').gsub(/[:\-]/, '')}.csv")
+    File.join(path_to_accuracy_score_chart, "accuracy_score_chart_#{Time.now.strftime('%F%T').gsub(/[:-]/, '')}.csv")
   end
 end

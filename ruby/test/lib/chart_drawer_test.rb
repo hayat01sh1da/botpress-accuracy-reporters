@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'minitest/autorun'
@@ -15,7 +16,8 @@ class CSVChartDrawerTest < Minitest::Test
   def test_csv
     csv_chart = ::Lib::CsvChartDrawer.run(path_to_test_data:, res_bodies:)
     test_data = CSV.read(path_to_test_data)
-    assert_equal test_data.length, csv_chart.split(/\n/).length
+
+    assert_equal test_data.length, csv_chart.split("\n").length
   end
 
   private
