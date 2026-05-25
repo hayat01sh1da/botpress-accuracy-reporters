@@ -16,33 +16,13 @@ class ScoreChartController < ApplicationController
   # POST: /score_chart
   def create
     @score_chart_form = ScoreChartForm.new(test_params)
-    if @score_chart_form.valid?
-      begin
-        res_bodies = AccuracyCheckQuery.request!(
-          scheme: @score_chart_form.scheme,
-          host: @score_chart_form.host,
-          bot_id: @score_chart_form.bot_id,
-          user_id: @score_chart_form.user_id,
-          access_token: @score_chart_form.access_token,
-          test_data: @score_chart_form.test_data
-        )
-      rescue SocketError
-        flash[:alert] = 'Host is invalid'
-        render :new and return
-      end
+    return render(:new) unless @score_chart_form.valid?
 
-      begin
-        csv_chart = CsvChartDrawer.run(path_to_test_data: @score_chart_form.test_data, res_bodies:)
-      rescue NoMethodError
-        flash[:alert] = 'BotID, UserID or AccessToken is invalid'
-        render :new and return
-      end
+    res_bodies = fetch_res_bodies or return
+    csv_chart  = draw_chart(res_bodies) or return
 
-      save_chart(filename:, csv_chart:)
-      redirect_to score_chart_draw_url
-    else
-      render :new
-    end
+    save_chart(filename:, csv_chart:)
+    redirect_to score_chart_draw_url
   end
 
   # GET: /score_chart/draw
@@ -67,5 +47,28 @@ class ScoreChartController < ApplicationController
 
   def redirect_to_new_score_chart_url
     redirect_to new_score_chart_url and return unless tmp_chart
+  end
+
+  def fetch_res_bodies
+    AccuracyCheckQuery.request!(
+      scheme: @score_chart_form.scheme,
+      host: @score_chart_form.host,
+      bot_id: @score_chart_form.bot_id,
+      user_id: @score_chart_form.user_id,
+      access_token: @score_chart_form.access_token,
+      test_data: @score_chart_form.test_data
+    )
+  rescue SocketError
+    flash[:alert] = 'Host is invalid'
+    render :new
+    nil
+  end
+
+  def draw_chart(res_bodies)
+    CsvChartDrawer.run(path_to_test_data: @score_chart_form.test_data, res_bodies:)
+  rescue NoMethodError
+    flash[:alert] = 'BotID, UserID or AccessToken is invalid'
+    render :new
+    nil
   end
 end

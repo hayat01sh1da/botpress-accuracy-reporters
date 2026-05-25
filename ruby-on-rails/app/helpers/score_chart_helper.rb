@@ -3,19 +3,12 @@
 
 # View helpers for rendering the accuracy score chart and its annotations.
 module ScoreChartHelper
+  ACCURACY_TIERS = [[70.0, 'excellent'], [50.0, 'good'], [30.0, 'bad']].freeze
+
   def accuracy(row:)
     return unless row.include?('%')
+    return '' if row.to_f.zero?
 
-    if row.to_f == 0.0
-      ''
-    elsif row.to_f >= 70.0
-      'excellent'
-    elsif row.to_f >= 50.0
-      'good'
-    elsif row.to_f >= 30.0
-      'bad'
-    else
-      'useless'
-    end
+    ACCURACY_TIERS.find { |threshold, _label| row.to_f >= threshold }&.last || 'useless'
   end
 end

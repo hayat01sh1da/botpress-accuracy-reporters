@@ -60,9 +60,14 @@ class AccuracyCheckQuery
   def request
     test_data['Question'].map do |question|
       req.set_form_data(type: :text, text: question)
-      net_http         = Net::HTTP.new(uri.host.to_s, uri.port)
-      net_http.use_ssl = true if uri.to_s.include?('https')
-      net_http.start { |http| http.request(req) }
+      http_client.start { |http| http.request(req) }
+    end
+  end
+
+  # @rbs return: Net::HTTP
+  def http_client
+    @http_client ||= Net::HTTP.new(uri.host.to_s, uri.port).tap do |client|
+      client.use_ssl = true if uri.to_s.include?('https')
     end
   end
 end
