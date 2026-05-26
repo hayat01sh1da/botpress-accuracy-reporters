@@ -31,3 +31,7 @@
 
 en:
   hello: "Hello world"
+  score_chart:
+    errors:
+      invalid_host: "Host is invalid"
+      invalid_credentials: "BotID, UserID or AccessToken is invalid"

@@ -1,8 +1,11 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
-require_relative './queries/accuracy_check_query'
-require_relative './lib/csv_chart_drawer'
+require_relative 'queries/accuracy_check_query'
+require_relative 'lib/csv_chart_drawer'
 
+# Exports an accuracy score chart by querying a Botpress endpoint with the
+# rows of a test-data CSV and writing the per-question scores out as CSV.
 class AccuracyReporter
   # @rbs scheme: String
   # @rbs host: String
@@ -29,7 +32,8 @@ class AccuracyReporter
     @user_id                      = user_id
     @path_to_test_data            = path_to_test_data
     @path_to_accuracy_score_chart = path_to_accuracy_score_chart
-    @res_bodies                   = ::Queries::AccuracyCheckQuery.request!(scheme:, host:, bot_id:, user_id:, path_to_test_data:)
+    @res_bodies                   = ::Queries::AccuracyCheckQuery.request!(scheme:, host:, bot_id:, user_id:,
+                                                                           path_to_test_data:)
   end
 
   # @rbs return: void
@@ -44,6 +48,6 @@ class AccuracyReporter
 
   # @rbs return: String
   def filename
-    File.join(path_to_accuracy_score_chart, "accuracy_score_chart_#{Time.now.strftime('%F%T').gsub(/[:\-]/, '')}.csv")
+    File.join(path_to_accuracy_score_chart, "accuracy_score_chart_#{Time.now.strftime('%F%T').gsub(/[:-]/, '')}.csv")
   end
 end

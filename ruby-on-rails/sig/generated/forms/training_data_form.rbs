@@ -1,5 +1,6 @@
 # Generated from app/forms/training_data_form.rb with RBS::Inline
 
+# Form object validating the params for the training-data download flow.
 class TrainingDataForm < ApplicationForm
   attr_accessor training_data: untyped
 end

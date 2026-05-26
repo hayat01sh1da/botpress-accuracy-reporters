@@ -1,9 +1,10 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'rails_helper'
 require 'csv'
 
-RSpec.describe TrainingDataController, type: :request do
+RSpec.describe TrainingDataController do
   describe '#new' do
     before do
       get new_training_data_path
@@ -29,21 +30,21 @@ RSpec.describe TrainingDataController, type: :request do
       post training_data_download_path, params: params
     end
 
-    context 'if JSON training data file is selected' do
+    context 'when a JSON training data file is selected' do
       let(:params)           { { training_data: nil } }
-      let(:postfix)          { DateTime.current.strftime('%F%T').gsub(/[:\-]/, '') }
+      let(:postfix)          { DateTime.current.strftime('%F%T').gsub(/[:-]/, '') }
       let(:file_to_download) { "training_data_#{postfix}.json" }
 
-      xit 'returns a successful status code' do
+      it 'returns a successful status code', skip: 'Pending until upload fixture wiring is in place' do
         expect(response).to have_http_status(:ok)
       end
 
-      xit 'returns a JSON training data download modal' do
+      it 'returns a JSON training data download modal', skip: 'Pending until upload fixture wiring is in place' do
         expect(response.header['Content-Disposition']).to eq("attachment; filename=\"#{file_to_download}\"; filename*=UTF-8''#{file_to_download}")
       end
     end
 
-    context 'if NO JSON training data file is selected' do
+    context 'when NO JSON training data file is selected' do
       let(:params) { { training_data: nil } }
 
       it 'returns a successful status code' do

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'rails_helper'
 
-RSpec.describe TopController, type: :request do
+RSpec.describe TopController do
   describe '#new' do
     before do
       get top_path

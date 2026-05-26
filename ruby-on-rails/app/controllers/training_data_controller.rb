@@ -1,5 +1,7 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
+# Handles the CSV-to-JSON training-data conversion download flow.
 class TrainingDataController < ApplicationController
   include Format
 
@@ -25,6 +27,6 @@ class TrainingDataController < ApplicationController
   end
 
   def filename
-    "training_data_#{DateTime.current.strftime('%F%T').gsub(/[:\-]/, '')}.json"
+    "training_data_#{DateTime.current.strftime('%F%T').gsub(/[:-]/, '')}.json"
   end
 end

@@ -1,6 +1,8 @@
 # Generated from src/lib/csv_chart_drawer.rb with RBS::Inline
 
 module Lib
+  # Builds a CSV chart that pairs each test question with the confidence
+  # scores returned by Botpress for every candidate answer.
   class CsvChartDrawer
     # @rbs path_to_test_data: String
     # @rbs res_bodies: Array[Hash[String, untyped]]
@@ -24,10 +26,14 @@ module Lib
     # @rbs return: Array[String]
     def headers: () -> Array[String]
 
-    # @rbs return: Array[Array[Hash[String, (String | Float)]]]
-    def score_tables: () -> Array[Array[Hash[String, String | Float]]]
+    # @rbs return: Array[Hash[String, Float]]
+    def score_tables: () -> Array[Hash[String, Float]]
 
     # @rbs return: Array[Array[String]]
     def rows: () -> Array[Array[String]]
+
+    # @rbs score_table: Hash[String, Float]
+    # @rbs return: Array[String]
+    def score_row_for: (Hash[String, Float] score_table) -> Array[String]
   end
 end

@@ -1,5 +1,6 @@
 # Generated from app/controllers/top_controller.rb with RBS::Inline
 
+# Renders the landing page that links to the score-chart and training-data flows.
 class TopController < ApplicationController
   # GET: /top
   def index: () -> untyped

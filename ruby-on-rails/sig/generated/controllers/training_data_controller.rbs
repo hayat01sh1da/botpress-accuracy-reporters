@@ -1,5 +1,6 @@
 # Generated from app/controllers/training_data_controller.rb with RBS::Inline
 
+# Handles the CSV-to-JSON training-data conversion download flow.
 class TrainingDataController < ApplicationController
   include Format
 

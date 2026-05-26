@@ -1,5 +1,6 @@
 # Generated from app/controllers/score_chart_controller.rb with RBS::Inline
 
+# Handles the upload/draw/download flow for the Botpress accuracy score chart.
 class ScoreChartController < ApplicationController
   include ChartManager
 
@@ -22,4 +23,8 @@ class ScoreChartController < ApplicationController
   def filename: () -> untyped
 
   def redirect_to_new_score_chart_url: () -> untyped
+
+  def fetch_res_bodies: () -> untyped
+
+  def draw_chart: (untyped res_bodies) -> untyped
 end

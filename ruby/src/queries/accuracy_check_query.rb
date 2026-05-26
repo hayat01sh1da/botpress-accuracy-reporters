@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
 require 'net/http'
@@ -5,9 +6,10 @@ require 'csv'
 require 'json'
 
 module Queries
+  # Sends each question from a test-data CSV to a Botpress /converse endpoint
+  # and returns the parsed response bodies.
   class AccuracyCheckQuery
-
-    INVALID_PATTERNS = /[\\\'\|\`\^\"\<\>\)\(\}\{\]\[\;\/\?\:\@\&\=\+\$\,\%\# ]/
+    INVALID_PATTERNS = %r![\\'|`\^"<>)(}{\]\[;/?:@&=+$,%\# ]!
 
     # @rbs scheme: String
     # @rbs host: String
@@ -58,12 +60,17 @@ module Queries
 
     # @rbs return: Array[Net::HTTPResponse]
     def request
-      test_data['Question'].map { |question|
+      test_data['Question'].map do |question|
         req.set_form_data(type: :text, text: question)
-        net_http         = Net::HTTP.new(uri.host.to_s, uri.port)
-        net_http.use_ssl = true if uri.to_s.include?('https')
-        net_http.start { |http| http.request(req) }
-      }
+        http_client.start { |http| http.request(req) }
+      end
+    end
+
+    # @rbs return: Net::HTTP
+    def http_client
+      @http_client ||= Net::HTTP.new(uri.host.to_s, uri.port).tap do |client|
+        client.use_ssl = true if uri.to_s.include?('https')
+      end
     end
   end
 end

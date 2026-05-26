@@ -1,10 +1,12 @@
+# frozen_string_literal: true
 # rbs_inline: enabled
 
+# Reads, writes, and cleans accuracy-score CSV charts under tmp/downloads.
 module ChartManager
-  PATH = Rails.root.join('tmp', 'downloads')
+  PATH = Rails.root.join('tmp/downloads')
 
   def save_chart(filename:, csv_chart:)
-    Dir.mkdir(PATH) unless Dir.exist?(PATH)
+    FileUtils.mkdir_p(PATH)
     File.open(PATH.join(filename), 'w') { |f| f.puts(csv_chart) }
   end
 
@@ -17,7 +19,7 @@ module ChartManager
   end
 
   def matrix_chart
-    CSV.open(tmp_chart) { |f| f.read } if tmp_chart
+    CSV.read(tmp_chart) if tmp_chart
   end
 
   def clear_tmp_charts

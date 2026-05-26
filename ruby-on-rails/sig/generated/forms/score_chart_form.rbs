@@ -1,5 +1,6 @@
 # Generated from app/forms/score_chart_form.rb with RBS::Inline
 
+# Form object validating the params for the score-chart create flow.
 class ScoreChartForm < ApplicationForm
   attr_accessor scheme: untyped
 

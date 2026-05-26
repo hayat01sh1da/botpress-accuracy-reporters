@@ -1,5 +1,6 @@
 # Generated from app/controllers/concerns/chart_manager.rb with RBS::Inline
 
+# Reads, writes, and cleans accuracy-score CSV charts under tmp/downloads.
 module ChartManager
   PATH: untyped
 
