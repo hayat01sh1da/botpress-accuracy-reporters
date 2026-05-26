@@ -19,7 +19,7 @@ module ChartManager
   end
 
   def matrix_chart
-    CSV.open(tmp_chart, &:read) if tmp_chart
+    CSV.read(tmp_chart) if tmp_chart
   end
 
   def clear_tmp_charts

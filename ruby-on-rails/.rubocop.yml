@@ -1,3 +1,5 @@
+inherit_from: .rubocop_todo.yml
+
 # Reference: https://github.com/rubocop/ruby-style-guide
 
 plugins:

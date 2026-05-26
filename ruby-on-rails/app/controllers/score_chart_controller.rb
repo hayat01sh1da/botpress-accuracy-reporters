@@ -50,22 +50,18 @@ class ScoreChartController < ApplicationController
   end
 
   def fetch_res_bodies
-    AccuracyCheckQuery.request!(**accuracy_check_params)
-  rescue SocketError
-    flash[:alert] = I18n.t('score_chart.errors.invalid_host')
-    render :new
-    nil
-  end
-
-  def accuracy_check_params
-    {
+    AccuracyCheckQuery.request!(
       scheme: @score_chart_form.scheme,
       host: @score_chart_form.host,
       bot_id: @score_chart_form.bot_id,
       user_id: @score_chart_form.user_id,
       access_token: @score_chart_form.access_token,
       test_data: @score_chart_form.test_data
-    }
+    )
+  rescue SocketError
+    flash[:alert] = I18n.t('score_chart.errors.invalid_host')
+    render :new
+    nil
   end
 
   def draw_chart(res_bodies)

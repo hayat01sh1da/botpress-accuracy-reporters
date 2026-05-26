@@ -40,13 +40,11 @@ module Lib
       %w[ID Test_Data].concat(test_data['ID'])
     end
 
-    # @rbs return: Array[Array[Hash[String, (String | Float)]]]
+    # @rbs return: Array[Hash[String, Float]]
     def score_tables
       res_bodies.map do |res_body|
-        (0...res_body['suggestions'].length).map do |index|
-          answer = res_body['suggestions'][index]['payloads'][0]['text']
-          score  = res_body['suggestions'][index]['confidence']
-          { answer => score }
+        res_body['suggestions'].to_h do |suggestion|
+          [suggestion['payloads'][0]['text'], suggestion['confidence']]
         end
       end
     end
@@ -56,15 +54,13 @@ module Lib
       score_tables.map { |score_table| score_row_for(score_table) }
     end
 
-    # @rbs score_table: Array[Hash[String, (String | Float)]]
+    # @rbs score_table: Hash[String, Float]
     # @rbs return: Array[String]
     def score_row_for(score_table)
       scores = Array.new(test_data['Answer'].length, '0.0%')
-      score_table.each do |score_mapping|
-        score_mapping.each do |answer, score|
-          index         = test_data['Answer'].find_index(answer)
-          scores[index] = "#{format('%.1f', score * 100)}%"
-        end
+      score_table.each do |answer, score|
+        index         = test_data['Answer'].find_index(answer)
+        scores[index] = "#{format('%.1f', score * 100)}%"
       end
       scores
     end

@@ -26,7 +26,5 @@ class ScoreChartController < ApplicationController
 
   def fetch_res_bodies: () -> untyped
 
-  def accuracy_check_params: () -> untyped
-
   def draw_chart: (untyped res_bodies) -> untyped
 end

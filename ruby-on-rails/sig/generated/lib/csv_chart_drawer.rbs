@@ -25,13 +25,13 @@ class CsvChartDrawer
   # @rbs return: Array[String]
   def headers: () -> Array[String]
 
-  # @rbs return: Array[Array[Hash[String, (String | Float)]]]
-  def score_tables: () -> Array[Array[Hash[String, String | Float]]]
+  # @rbs return: Array[Hash[String, Float]]
+  def score_tables: () -> Array[Hash[String, Float]]
 
   # @rbs return: Array[Array[String]]
   def rows: () -> Array[Array[String]]
 
-  # @rbs score_table: Array[Hash[String, (String | Float)]]
+  # @rbs score_table: Hash[String, Float]
   # @rbs return: Array[String]
-  def score_row_for: (Array[Hash[String, String | Float]] score_table) -> Array[String]
+  def score_row_for: (Hash[String, Float] score_table) -> Array[String]
 end
