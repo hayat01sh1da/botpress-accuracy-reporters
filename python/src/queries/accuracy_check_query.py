@@ -1,46 +1,72 @@
-import urllib.request
+import csv
 import json
 import os
 import re
+import urllib.request
 from typing import Any
-from list_handler import __csv_to_dicts__
+from urllib.parse import urlencode
 
-INVALID_PATTERNS = r'[\\\'\|\`\^\"\<\>\)\(\}\{\]\[\;\/\?\:\@\&\=\+\$\,\%\# ]'
+INVALID_PATTERNS = r'[\\\'|`^"<>)(}{\]\[;/?:@&=+$,%# ]'
 
 
 class AccuracyCheckQuery:
-    def __init__(
-            self,
-            scheme: str,
-            host: str,
-            bot_id: str,
-            user_id: str,
-            path_to_test_data: str) -> None:
-        self.scheme = re.sub(INVALID_PATTERNS, '', scheme)
-        self.host = re.sub(INVALID_PATTERNS, '', host)
-        self.bot_id = re.sub(INVALID_PATTERNS, '', bot_id)
-        self.user_id = re.sub(INVALID_PATTERNS, '', user_id)
-        self.test_data = __csv_to_dicts__(path_to_test_data)
-        self.uri = f'{self.scheme}://{self.host}/api/v1/bots/{self.bot_id}/converse/{self.user_id}/secured?include=suggestions'
+    """Sends each question from a test-data CSV to a Botpress /converse
+    endpoint and returns the parsed response bodies."""
 
-    def res_bodies(self) -> list[dict[str, Any]]:
-        return [json.loads(res_body.read()) for res_body in self.__request__()]
+    @classmethod
+    def request(
+        cls,
+        scheme: str,
+        host: str,
+        bot_id: str,
+        user_id: str,
+        path_to_test_data: str,
+    ) -> list[dict[str, Any]]:
+        return cls(
+            scheme, host, bot_id, user_id, path_to_test_data
+        )._request()
+
+    def __init__(
+        self,
+        scheme: str,
+        host: str,
+        bot_id: str,
+        user_id: str,
+        path_to_test_data: str,
+    ) -> None:
+        self._scheme = re.sub(INVALID_PATTERNS, '', scheme)
+        self._host = re.sub(INVALID_PATTERNS, '', host)
+        self._bot_id = re.sub(INVALID_PATTERNS, '', bot_id)
+        self._user_id = re.sub(INVALID_PATTERNS, '', user_id)
+        with open(path_to_test_data) as f:
+            self._test_data = list(csv.DictReader(f))
 
     # private
 
-    def __request__(self) -> list[Any]:
-        responses = list()
-        for test_datum in self.test_data:
-            header = {
-                'Content-Type': 'application/json',
-                'Authorization': os.environ['BOTPRESS_ACCESS_TOKEN']
-            }
-            body = {
-                'type': 'text',
-                'text': test_datum['Question']
-            }
-            req = urllib.request.Request(
-                self.uri, json.dumps(body).encode(), header)
-            res = urllib.request.urlopen(req)
-            responses.append(res)
-        return responses
+    def _request(self) -> list[dict[str, Any]]:
+        return [json.loads(response.read()) for response in self._responses()]
+
+    def _uri(self) -> str:
+        return (
+            f'{self._scheme}://{self._host}/api/v1/bots/{self._bot_id}'
+            f'/converse/{self._user_id}/secured?include=suggestions'
+        )
+
+    def _responses(self) -> list[Any]:
+        uri = self._uri()
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': os.environ.get('BOTPRESS_ACCESS_TOKEN', ''),
+        }
+        return [
+            urllib.request.urlopen(
+                urllib.request.Request(
+                    uri,
+                    urlencode(
+                        {'type': 'text', 'text': test_datum['Question']}
+                    ).encode(),
+                    headers,
+                )
+            )
+            for test_datum in self._test_data
+        ]

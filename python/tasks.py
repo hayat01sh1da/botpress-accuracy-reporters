@@ -22,9 +22,14 @@ def export_accuracy_score_report(c: Context) -> None:
     path_to_test_data = os.path.join(
         path_to_accuracy_score_chart, 'test_data.csv')
 
-    accuracy_reporter = AccuracyReporter(
-        scheme, host, bot_id, user_id, path_to_test_data)
-    accuracy_reporter.run(path_to_accuracy_score_chart)
+    AccuracyReporter.run(
+        scheme=scheme,
+        host=host,
+        bot_id=bot_id,
+        user_id=user_id,
+        path_to_test_data=path_to_test_data,
+        path_to_accuracy_score_chart=path_to_accuracy_score_chart,
+    )
     print('--- Successfully exported accuracy score chart under '
           f'{path_to_accuracy_score_chart}/ ---')
 
@@ -36,8 +41,10 @@ def format_test_data(c: Context) -> None:
         '..', 'csv', 'training_data.csv')
     path_to_json_training_data = os.path.join('..', 'json')
 
-    data_trainer = TrainingDataFormatter(path_to_csv_training_data)
-    data_trainer.export(path_to_json_training_data)
+    TrainingDataFormatter.run(
+        path_to_csv_training_data=path_to_csv_training_data,
+        path_to_json_training_data=path_to_json_training_data,
+    )
     print('--- Successfully exported JSON training data under '
           f'{path_to_json_training_data}/ ---')
 
