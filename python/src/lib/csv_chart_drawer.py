@@ -1,51 +1,56 @@
 import csv
-from typing import Any, TextIO
-from list_handler import __csv_to_dicts__
+import io
+from typing import Any
 
 
 class CsvChartDrawer:
+    """Builds a CSV chart that pairs each test question with the confidence
+    scores returned by Botpress for every candidate answer."""
+
+    @classmethod
+    def run(cls, path_to_test_data: str,
+            res_bodies: list[dict[str, Any]]) -> str:
+        return cls(path_to_test_data, res_bodies)._run()
+
     def __init__(self, path_to_test_data: str,
                  res_bodies: list[dict[str, Any]]) -> None:
-        self.test_data = __csv_to_dicts__(path_to_test_data)
-        self.res_bodies = res_bodies
-        self.ids = [test_datum['ID'] for test_datum in self.test_data]
-        self.questions = [test_datum['Question']
-                          for test_datum in self.test_data]
-        self.answers = [test_datum['Answer'] for test_datum in self.test_data]
-        self.header = ['ID', 'Test_Data'] + self.ids
-
-    def csv(self, f: TextIO) -> None:
-        writer = csv.writer(f)
-        writer.writerow(self.header)
-        i = 0
-        for row in self.__rows__():
-            writer.writerow([self.ids[i], self.questions[i]] + row)
-            i += 1
+        with open(path_to_test_data) as f:
+            self._test_data = list(csv.DictReader(f))
+        self._res_bodies = res_bodies
 
     # private
 
-    def __score_tables__(self) -> list[list[dict[str, float]]]:
-        score_tables = list()
-        for res_body in self.res_bodies:
-            _score_tables = list()
-            for i in range(len(res_body['suggestions'])):
-                score_table = dict()
-                answer = res_body['suggestions'][i]['payloads'][0]['text']
-                score = res_body['suggestions'][i]['confidence']
-                score_table[answer] = score
-                _score_tables.append(score_table)
-            score_tables.append(_score_tables)
-        return score_tables
+    def _run(self) -> str:
+        buf = io.StringIO()
+        writer = csv.writer(buf, lineterminator='\n')
+        writer.writerow(self._headers())
+        for index, row in enumerate(self._rows()):
+            writer.writerow(
+                [self._test_data[index]['ID'],
+                 self._test_data[index]['Question']] + row
+            )
+        return buf.getvalue()
 
-    def __rows__(self) -> list[list[str]]:
-        rows = list()
-        for s_tables in self.__score_tables__():
-            scores = list()
-            _scores = ['0.0%' * 1 for i in range(len(self.test_data))]
-            for s_table in s_tables:
-                for answer, score in s_table.items():
-                    index = self.answers.index(answer)
-                    _scores[index] = f'{score * 100:.1f}%'
-            scores.append(_scores)
-            rows.extend(scores)
-        return rows
+    def _headers(self) -> list[str]:
+        return ['ID', 'Test_Data'] + [datum['ID'] for datum in self._test_data]
+
+    def _score_tables(self) -> list[dict[str, float]]:
+        return [
+            {
+                suggestion['payloads'][0]['text']: suggestion['confidence']
+                for suggestion in res_body['suggestions']
+            }
+            for res_body in self._res_bodies
+        ]
+
+    def _rows(self) -> list[list[str]]:
+        return [self._score_row_for(score_table)
+                for score_table in self._score_tables()]
+
+    def _score_row_for(self, score_table: dict[str, float]) -> list[str]:
+        answers = [datum['Answer'] for datum in self._test_data]
+        scores = ['0.0%'] * len(answers)
+        for answer, score in score_table.items():
+            index = answers.index(answer)
+            scores[index] = f'{score * 100:.1f}%'
+        return scores

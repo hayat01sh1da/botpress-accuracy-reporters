@@ -25,12 +25,12 @@ class AccuracyCheckQuery
   # @rbs access_token: String
   # @rbs return: void
   def initialize(scheme:, host:, bot_id:, user_id:, access_token:, test_data:)
-    @scheme    = scheme.gsub(INVALID_PATTERNS, '')
-    @host      = host.gsub(INVALID_PATTERNS, '')
-    @bot_id    = bot_id.gsub(INVALID_PATTERNS, '')
-    @user_id   = user_id.gsub(INVALID_PATTERNS, '')
-    @user_id   = access_token.chomp
-    @test_data = CSV.read(test_data, headers: true)
+    @scheme       = scheme.gsub(INVALID_PATTERNS, '')
+    @host         = host.gsub(INVALID_PATTERNS, '')
+    @bot_id       = bot_id.gsub(INVALID_PATTERNS, '')
+    @user_id      = user_id.gsub(INVALID_PATTERNS, '')
+    @access_token = access_token.chomp
+    @test_data    = CSV.read(test_data, headers: true)
   end
 
   # @rbs return: Array[Hash[String, untyped]]
@@ -43,7 +43,7 @@ class AccuracyCheckQuery
 
   private
 
-  attr_reader :scheme, :host, :bot_id, :user_id, :test_data, :req
+  attr_reader :scheme, :host, :bot_id, :user_id, :access_token, :test_data, :req
 
   # @rbs return: URI::Generic
   def uri
@@ -53,7 +53,7 @@ class AccuracyCheckQuery
   # @rbs return: void
   def authorized
     @req                 = Net::HTTP::Post.new(uri)
-    @req[:authorization] = ENV.fetch('BOTPRESS_ACCESS_TOKEN', '')
+    @req[:authorization] = access_token
   end
 
   # @rbs return: Array[Net::HTTPResponse]
