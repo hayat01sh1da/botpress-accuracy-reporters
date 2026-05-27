@@ -36,6 +36,8 @@ class AccuracyCheckQuery
 
   attr_reader user_id: untyped
 
+  attr_reader access_token: untyped
+
   attr_reader test_data: untyped
 
   attr_reader req: untyped
