@@ -12,7 +12,7 @@
 | Gemfile                 | 4.0.12                             | Per-project dependency manifest; versions install via Bundler.                                                 |
 | Bundler                 | 4.0.12                             | Resolves and installs the gems declared in the Gemfile.                                                        |
 | Ruby CLI helpers        | Ruby 4.0.5                         | Depend only on the Ruby standard library.                                                                      |
-| Python automation       | CPython 3.14.5 (`.python-version`) | Scripts currently rely on the Python standard library; add new packages via per-folder requirements if needed. |
+| Python automation       | CPython 3.14.6 (`.python-version`) | Scripts currently rely on the Python standard library; add new packages via per-folder requirements if needed. |
 
 ## Backward Compatibility
 
