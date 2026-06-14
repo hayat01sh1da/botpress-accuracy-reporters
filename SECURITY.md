@@ -9,8 +9,8 @@
 | ----------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | OS baseline             | WSL (Ubuntu 25.10)                 | Shared environment across tracks.                                                                              |
 | Ruby on Rails exercises | Ruby 4.0.5 (`.ruby-version`)       | Bundler-managed gems per sample app; keep Rails/Botpress gems current.                                         |
-| Gemfile                 | 4.0.12                             | Per-project dependency manifest; versions install via Bundler.                                                 |
-| Bundler                 | 4.0.12                             | Resolves and installs the gems declared in the Gemfile.                                                        |
+| Gemfile                 | 4.0.14                             | Per-project dependency manifest; versions install via Bundler.                                                 |
+| Bundler                 | 4.0.14                             | Resolves and installs the gems declared in the Gemfile.                                                        |
 | Ruby CLI helpers        | Ruby 4.0.5                         | Depend only on the Ruby standard library.                                                                      |
 | Python automation       | CPython 3.14.6 (`.python-version`) | Scripts currently rely on the Python standard library; add new packages via per-folder requirements if needed. |
 
