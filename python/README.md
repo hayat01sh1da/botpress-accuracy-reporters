@@ -1,6 +1,7 @@
 ## 1. Environment
 
 - Python 3.14.6
+- pip 26.1.2
 
 ## 2. Install Libraries via requirements.txt
 
