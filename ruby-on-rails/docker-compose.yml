@@ -14,7 +14,12 @@ services:
     volumes:
       - .:/app
       - bundle:/app/vendor/bundle
+      # Back the RBS collection with a named volume so it is not on the
+      # world-writable Windows bind mount, which breaks FileUtils.remove_entry_secure.
+      - gem_rbs_collection:/app/.gem_rbs_collection
 
 volumes:
   bundle:
+    driver: local
+  gem_rbs_collection:
     driver: local
