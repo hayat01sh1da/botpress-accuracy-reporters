@@ -27,7 +27,7 @@ gem 'ostruct', '~> 0.6.3'
 
 # CGI: used transitively by Rails (cookie/session escaping). Formerly a default
 # gem; pinned explicitly so Bundler/RBS can resolve it from Gemfile.lock.
-gem 'cgi', '~> 0.5.0'
+gem 'cgi', '~> 0.5.2'
 
 group :development, :test do
   # Debug tool used with binding.irb. Explicit require avoids eager loading `debug/prelude`
