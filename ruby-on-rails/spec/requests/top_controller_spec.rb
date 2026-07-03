@@ -18,8 +18,10 @@ RSpec.describe TopController do
     end
 
     it 'returns a list of linked pages' do
-      expect(response.body).to include('<li class="list-group-item"><a href="/training_data/new">Create JSON Training Data</a></li>')
-      expect(response.body).to include('<li class="list-group-item"><a href="/score_chart/new">Create Score Chart</a></li>')
+      expect(response.body).to include(
+        '<li class="list-group-item"><a href="/training_data/new">Create JSON Training Data</a></li>',
+        '<li class="list-group-item"><a href="/score_chart/new">Create Score Chart</a></li>'
+      )
     end
   end
 end

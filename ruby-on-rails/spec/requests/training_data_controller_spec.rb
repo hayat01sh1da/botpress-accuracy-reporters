@@ -6,6 +6,15 @@ require 'csv'
 
 RSpec.describe TrainingDataController do
   describe '#new' do
+    let(:upload_form_snippets) do
+      [
+        '<form enctype="multipart/form-data" action="/training_data/download" accept-charset="UTF-8" method="post">',
+        '<p><input accept=".csv" type="file" name="training_data" id="training_data" /></p>',
+        '<p><input type="submit" name="commit" value="Export JSON" class="btn btn-primary" ' \
+        'data-disable-with="Export JSON" /></p>'
+      ]
+    end
+
     before do
       get new_training_data_path
     end
@@ -19,9 +28,7 @@ RSpec.describe TrainingDataController do
     end
 
     it 'returns a CSV training data upload form' do
-      expect(response.body).to include('<form enctype="multipart/form-data" action="/training_data/download" accept-charset="UTF-8" method="post">')
-      expect(response.body).to include('<p><input accept=".csv" type="file" name="training_data" id="training_data" /></p>')
-      expect(response.body).to include('<p><input type="submit" name="commit" value="Export JSON" class="btn btn-primary" data-disable-with="Export JSON" /></p>')
+      expect(response.body).to include(*upload_form_snippets)
     end
   end
 
@@ -40,7 +47,8 @@ RSpec.describe TrainingDataController do
       end
 
       it 'returns a JSON training data download modal', skip: 'Pending until upload fixture wiring is in place' do
-        expect(response.header['Content-Disposition']).to eq("attachment; filename=\"#{file_to_download}\"; filename*=UTF-8''#{file_to_download}")
+        expect(response.header['Content-Disposition'])
+          .to eq("attachment; filename=\"#{file_to_download}\"; filename*=UTF-8''#{file_to_download}")
       end
     end
 
@@ -52,8 +60,10 @@ RSpec.describe TrainingDataController do
       end
 
       it 'renders a CSV training data upload page with an error message' do
-        expect(response.body).to include('<div class="alert alert-danger">')
-        expect(response.body).to include('<li>Training data can&#39;t be blank</li>')
+        expect(response.body).to include(
+          '<div class="alert alert-danger">',
+          '<li>Training data can&#39;t be blank</li>'
+        )
       end
     end
   end
