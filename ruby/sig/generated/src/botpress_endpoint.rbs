@@ -1,0 +1,14 @@
+# Generated from src/botpress_endpoint.rb with RBS::Inline
+
+# Identifies the Botpress bot an accuracy report is generated against.
+class BotpressEndpoint < ::Data
+  attr_reader scheme: String
+
+  attr_reader host: String
+
+  attr_reader bot_id: String
+
+  attr_reader user_id: String
+
+  def self.new: (scheme: String, host: String, bot_id: String, user_id: String) -> instance
+end
