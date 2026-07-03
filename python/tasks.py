@@ -8,25 +8,25 @@ for _sub in ('src', 'src/lib', 'src/queries'):
     sys.path.insert(0, os.path.join(_ROOT, _sub))
 
 from accuracy_reporter import AccuracyReporter  # noqa: E402
+from botpress_endpoint import BotpressEndpoint  # noqa: E402
 from training_data_formatter import TrainingDataFormatter  # noqa: E402
 
 
 @task
 def export_accuracy_score_report(c: Context) -> None:
     """Export the accuracy score report to Botpress"""
-    scheme = 'https'
-    host = 'oasist-botpress-server.herokuapp.com'
-    bot_id = 'sample-bot'
-    user_id = 'oasist'
+    endpoint = BotpressEndpoint(
+        scheme='https',
+        host='oasist-botpress-server.herokuapp.com',
+        bot_id='sample-bot',
+        user_id='oasist',
+    )
     path_to_accuracy_score_chart = os.path.join('..', 'csv')
     path_to_test_data = os.path.join(
         path_to_accuracy_score_chart, 'test_data.csv')
 
     AccuracyReporter.run(
-        scheme=scheme,
-        host=host,
-        bot_id=bot_id,
-        user_id=user_id,
+        endpoint=endpoint,
         path_to_test_data=path_to_test_data,
         path_to_accuracy_score_chart=path_to_accuracy_score_chart,
     )

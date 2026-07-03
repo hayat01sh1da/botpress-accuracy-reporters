@@ -6,6 +6,7 @@ sys.path.append('./src/lib')
 sys.path.append('./src/queries')
 
 from accuracy_check_query import AccuracyCheckQuery  # noqa: E402
+from botpress_endpoint import BotpressEndpoint  # noqa: E402
 from csv_chart_drawer import CsvChartDrawer  # noqa: E402
 
 
@@ -17,42 +18,27 @@ class AccuracyReporter:
     @classmethod
     def run(
         cls,
-        scheme: str,
-        host: str,
-        bot_id: str,
-        user_id: str,
+        endpoint: BotpressEndpoint,
         path_to_test_data: str,
         path_to_accuracy_score_chart: str,
     ) -> None:
         cls(
-            scheme,
-            host,
-            bot_id,
-            user_id,
+            endpoint,
             path_to_test_data,
             path_to_accuracy_score_chart,
         )._run()
 
     def __init__(
         self,
-        scheme: str,
-        host: str,
-        bot_id: str,
-        user_id: str,
+        endpoint: BotpressEndpoint,
         path_to_test_data: str,
         path_to_accuracy_score_chart: str,
     ) -> None:
-        self._scheme = scheme
-        self._host = host
-        self._bot_id = bot_id
-        self._user_id = user_id
+        self._endpoint = endpoint
         self._path_to_test_data = path_to_test_data
         self._path_to_accuracy_score_chart = path_to_accuracy_score_chart
         self._res_bodies = AccuracyCheckQuery.request(
-            scheme=scheme,
-            host=host,
-            bot_id=bot_id,
-            user_id=user_id,
+            endpoint=endpoint,
             path_to_test_data=path_to_test_data,
         )
 

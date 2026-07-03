@@ -6,6 +6,8 @@ import urllib.request
 from typing import Any
 from urllib.parse import urlencode
 
+from botpress_endpoint import BotpressEndpoint
+
 INVALID_PATTERNS = r'[\\\'|`^"<>)(}{\]\[;/?:@&=+$,%# ]'
 
 
@@ -16,28 +18,20 @@ class AccuracyCheckQuery:
     @classmethod
     def request(
         cls,
-        scheme: str,
-        host: str,
-        bot_id: str,
-        user_id: str,
+        endpoint: BotpressEndpoint,
         path_to_test_data: str,
     ) -> list[dict[str, Any]]:
-        return cls(
-            scheme, host, bot_id, user_id, path_to_test_data
-        )._request()
+        return cls(endpoint, path_to_test_data)._request()
 
     def __init__(
         self,
-        scheme: str,
-        host: str,
-        bot_id: str,
-        user_id: str,
+        endpoint: BotpressEndpoint,
         path_to_test_data: str,
     ) -> None:
-        self._scheme = re.sub(INVALID_PATTERNS, '', scheme)
-        self._host = re.sub(INVALID_PATTERNS, '', host)
-        self._bot_id = re.sub(INVALID_PATTERNS, '', bot_id)
-        self._user_id = re.sub(INVALID_PATTERNS, '', user_id)
+        self._scheme = re.sub(INVALID_PATTERNS, '', endpoint.scheme)
+        self._host = re.sub(INVALID_PATTERNS, '', endpoint.host)
+        self._bot_id = re.sub(INVALID_PATTERNS, '', endpoint.bot_id)
+        self._user_id = re.sub(INVALID_PATTERNS, '', endpoint.user_id)
         with open(path_to_test_data) as f:
             self._test_data = list(csv.DictReader(f))
 
