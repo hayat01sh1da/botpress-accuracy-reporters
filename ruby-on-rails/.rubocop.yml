@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 # Reference: https://github.com/rubocop/ruby-style-guide
 
 plugins:
@@ -16,19 +14,3 @@ AllCops:
     - 'db/schema.rb'
     - 'vendor/**/*'
     - 'node_modules/**/*'
-Metrics/ParameterLists:
-  Max: 6
-
-# Request specs assert against full HTML responses and naturally have long
-# strings and multiple expectations per example.
-Layout/LineLength:
-  Exclude:
-    - 'spec/**/*'
-
-RSpec/ExampleLength:
-  Exclude:
-    - 'spec/**/*'
-
-RSpec/MultipleExpectations:
-  Exclude:
-    - 'spec/**/*'
