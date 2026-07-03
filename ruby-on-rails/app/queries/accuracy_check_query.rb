@@ -6,31 +6,21 @@
 class AccuracyCheckQuery
   INVALID_PATTERNS = %r![\\'|`\^"<>)(}{\]\[;/?:@&=+$,%\# ]!
 
-  # @rbs scheme: String
-  # @rbs host: String
-  # @rbs bot_id: String
-  # @rbs user_id: String
-  # @rbs access_token: String
-  # @rbs test_data: String
+  # @rbs form: ScoreChartForm
   # @rbs return: Array[Hash[String, untyped]]
-  def self.request!(scheme:, host:, bot_id:, user_id:, access_token:, test_data:)
-    new(scheme:, host:, bot_id:, user_id:, access_token:, test_data:).request!
+  def self.request!(form:)
+    new(form:).request!
   end
 
-  # @rbs scheme: String
-  # @rbs host: String
-  # @rbs bot_id: String
-  # @rbs user_id: String
-  # @rbs test_data: String
-  # @rbs access_token: String
+  # @rbs form: ScoreChartForm
   # @rbs return: void
-  def initialize(scheme:, host:, bot_id:, user_id:, access_token:, test_data:)
-    @scheme       = scheme.gsub(INVALID_PATTERNS, '')
-    @host         = host.gsub(INVALID_PATTERNS, '')
-    @bot_id       = bot_id.gsub(INVALID_PATTERNS, '')
-    @user_id      = user_id.gsub(INVALID_PATTERNS, '')
-    @access_token = access_token.chomp
-    @test_data    = CSV.read(test_data, headers: true)
+  def initialize(form:)
+    @scheme       = form.scheme.gsub(INVALID_PATTERNS, '')
+    @host         = form.host.gsub(INVALID_PATTERNS, '')
+    @bot_id       = form.bot_id.gsub(INVALID_PATTERNS, '')
+    @user_id      = form.user_id.gsub(INVALID_PATTERNS, '')
+    @access_token = form.access_token.chomp
+    @test_data    = CSV.read(form.test_data, headers: true)
   end
 
   # @rbs return: Array[Hash[String, untyped]]
