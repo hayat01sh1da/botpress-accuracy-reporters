@@ -8,20 +8,22 @@
 
 # class AccuracyCheckQueryTest < ApplicationTest
 #   def setup
-#     @scheme            = 'https'
-#     @host              = 'oasist-botpress-server.herokuapp.com'
-#     @bot_id            = 'sample-bot'
-#     @user_id           = 'oasist'
+#     @endpoint = BotpressEndpoint.new(
+#       scheme: 'https',
+#       host: 'oasist-botpress-server.herokuapp.com',
+#       bot_id: 'sample-bot',
+#       user_id: 'oasist'
+#     )
 #     @path_to_test_data = File.join('..', 'csv', 'test_data.csv')
 #   end
 
 #   def test_res_bodies
-#     res_bodies = ::Queries::AccuracyCheckQuery.request!(scheme:, host:, bot_id:, user_id:, path_to_test_data:)
+#     res_bodies = ::Queries::AccuracyCheckQuery.request!(endpoint:, path_to_test_data:)
 #     test_data  = CSV.read(path_to_test_data, headers: true)
 #     assert_equal test_data.length, res_bodies.length
 #   end
 
 #   private
 
-#   attr_reader :scheme, :host, :bot_id, :user_id, :path_to_test_data
+#   attr_reader :endpoint, :path_to_test_data
 # end

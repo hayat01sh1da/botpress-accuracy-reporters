@@ -4,6 +4,7 @@
 require 'net/http'
 require 'csv'
 require 'json'
+require_relative '../botpress_endpoint'
 
 module Queries
   # Sends each question from a test-data CSV to a Botpress /converse endpoint
@@ -11,27 +12,21 @@ module Queries
   class AccuracyCheckQuery
     INVALID_PATTERNS = %r![\\'|`\^"<>)(}{\]\[;/?:@&=+$,%\# ]!
 
-    # @rbs scheme: String
-    # @rbs host: String
-    # @rbs bot_id: String
-    # @rbs user_id: String
+    # @rbs endpoint: BotpressEndpoint
     # @rbs path_to_test_data: String
     # @rbs return: Array[Hash[String, untyped]]
-    def self.request!(scheme:, host:, bot_id:, user_id:, path_to_test_data:)
-      new(scheme:, host:, bot_id:, user_id:, path_to_test_data:).request!
+    def self.request!(endpoint:, path_to_test_data:)
+      new(endpoint:, path_to_test_data:).request!
     end
 
-    # @rbs scheme: String
-    # @rbs host: String
-    # @rbs bot_id: String
-    # @rbs user_id: String
+    # @rbs endpoint: BotpressEndpoint
     # @rbs path_to_test_data: String
     # @rbs return: void
-    def initialize(scheme:, host:, bot_id:, user_id:, path_to_test_data:)
-      @scheme    = scheme.gsub(INVALID_PATTERNS, '')
-      @host      = host.gsub(INVALID_PATTERNS, '')
-      @bot_id    = bot_id.gsub(INVALID_PATTERNS, '')
-      @user_id   = user_id.gsub(INVALID_PATTERNS, '')
+    def initialize(endpoint:, path_to_test_data:)
+      @scheme    = endpoint.scheme.gsub(INVALID_PATTERNS, '')
+      @host      = endpoint.host.gsub(INVALID_PATTERNS, '')
+      @bot_id    = endpoint.bot_id.gsub(INVALID_PATTERNS, '')
+      @user_id   = endpoint.user_id.gsub(INVALID_PATTERNS, '')
       @test_data = CSV.read(path_to_test_data, headers: true)
     end
 
