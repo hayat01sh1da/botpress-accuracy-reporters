@@ -118,4 +118,10 @@ class Object
   def file_to_download: () -> untyped
 
   def postfix: () -> untyped
+
+  def upload_form_snippets: () -> untyped
+
+  def error_message_snippets: () -> untyped
+
+  def score_table_snippets: () -> untyped
 end

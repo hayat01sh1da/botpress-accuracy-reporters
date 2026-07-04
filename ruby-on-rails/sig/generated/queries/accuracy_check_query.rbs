@@ -5,23 +5,13 @@
 class AccuracyCheckQuery
   INVALID_PATTERNS: ::Regexp
 
-  # @rbs scheme: String
-  # @rbs host: String
-  # @rbs bot_id: String
-  # @rbs user_id: String
-  # @rbs access_token: String
-  # @rbs test_data: String
+  # @rbs form: ScoreChartForm
   # @rbs return: Array[Hash[String, untyped]]
-  def self.request!: (scheme: String, host: String, bot_id: String, user_id: String, access_token: String, test_data: String) -> Array[Hash[String, untyped]]
+  def self.request!: (form: ScoreChartForm) -> Array[Hash[String, untyped]]
 
-  # @rbs scheme: String
-  # @rbs host: String
-  # @rbs bot_id: String
-  # @rbs user_id: String
-  # @rbs test_data: String
-  # @rbs access_token: String
+  # @rbs form: ScoreChartForm
   # @rbs return: void
-  def initialize: (scheme: String, host: String, bot_id: String, user_id: String, access_token: String, test_data: String) -> void
+  def initialize: (form: ScoreChartForm) -> void
 
   # @rbs return: Array[Hash[String, untyped]]
   def request!: () -> Array[Hash[String, untyped]]
