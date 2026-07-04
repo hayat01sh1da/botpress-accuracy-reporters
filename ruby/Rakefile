@@ -8,14 +8,16 @@ task default: :test
 
 desc 'Export the accuracy score report to Botpress'
 Rake::Task.define_task(:export_accuracy_score_report) do
-  scheme                       = 'https'
-  host                         = 'oasist-botpress-server.herokuapp.com'
-  bot_id                       = 'sample-bot'
-  user_id                      = 'oasist'
+  endpoint = BotpressEndpoint.new(
+    scheme: 'https',
+    host: 'oasist-botpress-server.herokuapp.com',
+    bot_id: 'sample-bot',
+    user_id: 'oasist'
+  )
   path_to_accuracy_score_chart = File.join('..', 'csv')
-  File.join(path_to_accuracy_score_chart, 'test_data.csv')
+  path_to_test_data            = File.join(path_to_accuracy_score_chart, 'test_data.csv')
 
-  AccuracyReporter.run(scheme:, host:, bot_id:, user_id:, test_data:, path_to_accuracy_score_chart:)
+  AccuracyReporter.run(endpoint:, path_to_test_data:, path_to_accuracy_score_chart:)
   puts "--- Successfully exported accuracy score chart under #{path_to_accuracy_score_chart}/ ---"
 end
 
