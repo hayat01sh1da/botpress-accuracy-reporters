@@ -5,7 +5,7 @@
 # This workflow will download a prebuilt Ruby version, install dependencies and run tests with Rake
 # For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
 
-name: Ruby
+name: Ruby - CI
 
 on:
   push:
@@ -13,7 +13,7 @@ on:
       - master
     paths:
       - .github/actions/setup-ruby/action.yml
-      - .github/workflows/ruby.yml
+      - .github/workflows/ruby--ci.yml
       - .ruby-version
       - ruby/**/*.rb
       - ruby/**/*.rbs
@@ -25,7 +25,7 @@ on:
   pull_request:
     paths:
       - .github/actions/setup-ruby/action.yml
-      - .github/workflows/ruby.yml
+      - .github/workflows/ruby--ci.yml
       - .ruby-version
       - ruby/**/*.rb
       - ruby/**/*.rbs
@@ -55,14 +55,14 @@ jobs:
           filters: |
             ruby:
               - .github/actions/setup-ruby/action.yml
-              - .github/workflows/ruby.yml
+              - .github/workflows/ruby--ci.yml
               - .ruby-version
               - ruby/**/*.rb
               - ruby/Gemfile
               - ruby/Gemfile.lock
             rubocop:
               - .github/actions/setup-ruby/action.yml
-              - .github/workflows/ruby.yml
+              - .github/workflows/ruby--ci.yml
               - .ruby-version
               - ruby/**/*.rb
               - ruby/.rubocop.yml
@@ -71,7 +71,7 @@ jobs:
               - ruby/Gemfile.lock
             steep:
               - .github/actions/setup-ruby/action.yml
-              - .github/workflows/ruby.yml
+              - .github/workflows/ruby--ci.yml
               - .ruby-version
               - ruby/**/*.rb
               - ruby/**/*.rbs
