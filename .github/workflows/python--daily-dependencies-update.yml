@@ -1,0 +1,88 @@
+# This workflow updates pip library dependencies every day and opens a pull
+# request when any dependency changes are detected.
+
+name: Python - Daily Dependencies Update
+
+on:
+  schedule:
+    # 0:00 JST every day
+    - cron: "0 15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+      - name: Update pip Library Dependencies
+        working-directory: ./python
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt --upgrade
+          pip freeze > requirements.lock
+      - name: Generate Pull Request Description
+        env:
+          BODY_PATH: ${{ runner.temp }}/pr_body.md
+        run: |
+          ROWS=$(git diff --unified=0 -- python/requirements.lock \
+            | grep -E '^[+-][A-Za-z0-9]' \
+            | sed -E 's/^(.)/\1 /; s/==/ /' \
+            | awk '{ if ($1 == "-") before[$2] = $3; else after[$2] = $3 }
+              END {
+                for (name in after) {
+                  if (name in before) {
+                    if (before[name] != after[name]) print "|" name " |" before[name] " |" after[name] " |Updated |"
+                    delete before[name]
+                  } else {
+                    print "|" name " |- |" after[name] " |Added |"
+                  }
+                }
+                for (name in before) print "|" name " |" before[name] " |- |Removed |"
+              }' \
+            | sort)
+          if [ -z "$ROWS" ]; then ROWS='| | | |No dependency changes detected |'; fi
+          cat > "$BODY_PATH" <<EOF
+          ## 1. Overview
+
+          This pull request was created automatically by the Python - Daily Dependencies Update workflow.
+          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, and regenerates requirements.lock:
+
+          ~~~console
+          pip install --upgrade pip
+          pip install -r requirements.txt --upgrade
+          pip freeze > requirements.lock
+          ~~~
+
+          ## 2. Key Changes & Differences
+
+          |Libraries |Before |After |Changes & Differences |
+          |:-|:-|:-|:-|
+          $ROWS
+
+          ## 3. Summary
+
+          All pip library dependencies in python/requirements.lock are now up to date.
+          Please make sure that all CI workflows pass before merging this pull request.
+
+          ## 4. References
+
+          - [Python - Daily Dependencies Update workflow run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)
+          - [pip install documentation](https://pip.pypa.io/en/stable/cli/pip_install/)
+          EOF
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: daily/python-dependency-updates
+          delete-branch: true
+          commit-message: "[Daily][Python] Update pip Library Dependencies"
+          title: "[Daily][Python] Update pip Library Dependencies"
+          body-path: ${{ runner.temp }}/pr_body.md
