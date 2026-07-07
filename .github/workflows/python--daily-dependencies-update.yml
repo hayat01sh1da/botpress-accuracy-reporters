@@ -86,3 +86,5 @@ jobs:
           commit-message: "[Daily][Python] Update pip Library Dependencies"
           title: "[Daily][Python] Update pip Library Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
+          reviewers: hayat01sh1da
+          assignees: github-actions[bot]
