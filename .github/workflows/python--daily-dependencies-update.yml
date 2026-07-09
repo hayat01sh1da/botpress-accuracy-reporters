@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  update:
+  update_pip_library_dependencies:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:

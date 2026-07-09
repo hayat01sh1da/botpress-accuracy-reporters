@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  update:
+  update_gem_dependencies:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
@@ -83,8 +83,8 @@ jobs:
         with:
           branch: daily/ruby-dependency-updates
           delete-branch: true
-          commit-message: "[Daily][Ruby] Update Gem dependencies"
-          title: "[Daily][Ruby] Update Gem dependencies"
+          commit-message: "[Daily][Ruby] Update Gem Dependencies"
+          title: "[Daily][Ruby] Update Gem Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
           reviewers: hayat01sh1da
           assignees: github-actions[bot]
