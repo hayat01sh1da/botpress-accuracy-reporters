@@ -44,24 +44,8 @@ jobs:
         env:
           BODY_PATH: ${{ runner.temp }}/pr_body.md
         run: |
-          ROWS=$(git diff --unified=0 -- ruby/Gemfile.lock \
-            | grep -E '^[+-] {4}[^ ]+ \([0-9]' \
-            | sed -E 's/^(.) +/\1 /; s/[()]//g' \
-            | awk '{ if ($1 == "-") before[$2] = $3; else after[$2] = $3 }
-              END {
-                for (name in after) {
-                  if (name in before) {
-                    if (before[name] != after[name]) print "|" name " |" before[name] " |" after[name] " |Updated |"
-                    delete before[name]
-                  } else {
-                    print "|" name " |- |" after[name] " |Added |"
-                  }
-                }
-                for (name in before) print "|" name " |" before[name] " |- |Removed |"
-              }' \
-            | sort)
-          if [ -z "$ROWS" ]; then ROWS='| | | |No dependency changes detected |'; fi
-          cat > "$BODY_PATH" <<EOF
+          {
+            cat <<'OVERVIEW'
           ## 1. Overview
 
           This pull request was created automatically by the Ruby - Daily Dependencies Update workflow.
@@ -74,10 +58,10 @@ jobs:
           ~~~
 
           ## 2. Key Changes & Differences
-
-          |Gems |Before |After |Changes & Differences |
-          |:-|:-|:-|:-|
-          $ROWS
+          OVERVIEW
+            echo
+            bash .github/scripts/dependency_report.sh gem ruby/Gemfile.lock ruby/Gemfile Gems
+            cat <<SUMMARY
 
           ## 3. Summary
 
@@ -88,7 +72,8 @@ jobs:
 
           - [Ruby - Daily Dependencies Update workflow run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)
           - [bundle update documentation](https://bundler.io/man/bundle-update.1.html)
-          EOF
+          SUMMARY
+          } > "$BODY_PATH"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
