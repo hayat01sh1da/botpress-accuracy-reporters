@@ -14,13 +14,14 @@ permissions:
   pull-requests: write
 
 jobs:
-  update:
+  update_gem_dependencies:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ./.github/actions/setup-ruby
+        with:
+          job-name: update_gem_dependencies
       - name: Update Gem Dependencies
         working-directory: ./ruby
         env:
@@ -29,32 +30,26 @@ jobs:
           gem update --system
           gem install bundler
           bundle update --all
+      - name: Mirror Updated Versions to Gemfile
+        working-directory: ./ruby
+        run: |
+          ruby <<'RUBY'
+          versions = File.read('Gemfile.lock').scan(/^    (\S+) \((\d+(?:\.\d+)*)\)$/).to_h
+          gemfile = File.read('Gemfile').gsub(/^(\s*gem '([^']+)', )'~> [^']+'/) do
+            versions[$2] ? "#{$1}'~> #{versions[$2]}'" : $~[0]
+          end
+          File.write('Gemfile', gemfile)
+          RUBY
       - name: Generate Pull Request Description
         env:
           BODY_PATH: ${{ runner.temp }}/pr_body.md
         run: |
-          ROWS=$(git diff --unified=0 -- ruby/Gemfile.lock \
-            | grep -E '^[+-] {4}[^ ]+ \([0-9]' \
-            | sed -E 's/^(.) +/\1 /; s/[()]//g' \
-            | awk '{ if ($1 == "-") before[$2] = $3; else after[$2] = $3 }
-              END {
-                for (name in after) {
-                  if (name in before) {
-                    if (before[name] != after[name]) print "|" name " |" before[name] " |" after[name] " |Updated |"
-                    delete before[name]
-                  } else {
-                    print "|" name " |- |" after[name] " |Added |"
-                  }
-                }
-                for (name in before) print "|" name " |" before[name] " |- |Removed |"
-              }' \
-            | sort)
-          if [ -z "$ROWS" ]; then ROWS='| | | |No dependency changes detected |'; fi
-          cat > "$BODY_PATH" <<EOF
+          {
+            cat <<'OVERVIEW'
           ## 1. Overview
 
           This pull request was created automatically by the Ruby - Daily Dependencies Update workflow.
-          It upgrades RubyGems and Bundler, and updates every gem to the latest version allowed by the Gemfile:
+          It upgrades RubyGems and Bundler, updates every gem to the latest version allowed by the Gemfile, and mirrors the updated versions to the Gemfile:
 
           ~~~console
           gem update --system
@@ -63,28 +58,32 @@ jobs:
           ~~~
 
           ## 2. Key Changes & Differences
-
-          |Gems |Before |After |Changes & Differences |
-          |:-|:-|:-|:-|
-          $ROWS
+          OVERVIEW
+            echo
+            bash .github/scripts/dependency_report.sh gem ruby/Gemfile.lock ruby/Gemfile Gems
+            cat <<SUMMARY
 
           ## 3. Summary
 
-          All gem dependencies in ruby/Gemfile.lock are now up to date.
+          All gem dependencies in ruby/Gemfile and ruby/Gemfile.lock are now up to date.
           Please make sure that all CI workflows pass before merging this pull request.
 
           ## 4. References
 
           - [Ruby - Daily Dependencies Update workflow run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)
           - [bundle update documentation](https://bundler.io/man/bundle-update.1.html)
-          EOF
+          SUMMARY
+          } > "$BODY_PATH"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
           branch: daily/ruby-dependency-updates
           delete-branch: true
-          commit-message: "[Daily][Ruby] Update Gem dependencies"
-          title: "[Daily][Ruby] Update Gem dependencies"
+          add-paths: |
+            ruby/Gemfile
+            ruby/Gemfile.lock
+          commit-message: "[Daily][Ruby] Update Gem Dependencies"
+          title: "[Daily][Ruby] Update Gem Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
           reviewers: hayat01sh1da
-          assignees: github-actions[bot]
+          assignees: hayat01sh1da

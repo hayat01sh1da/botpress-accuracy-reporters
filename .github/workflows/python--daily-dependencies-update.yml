@@ -14,77 +14,75 @@ permissions:
   pull-requests: write
 
 jobs:
-  update:
+  update_pip_library_dependencies:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version-file: .python-version
+      - uses: ./.github/actions/setup-python
       - name: Update pip Library Dependencies
         working-directory: ./python
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt --upgrade
+          sed -E 's/==.*//' requirements.txt | xargs pip install --upgrade
           pip freeze > requirements.lock
+      - name: Mirror Updated Versions to requirements.txt
+        working-directory: ./python
+        run: |
+          python - <<'PY'
+          import re
+          from importlib.metadata import version
+          with open('requirements.txt') as f:
+              lines = f.read().splitlines()
+          with open('requirements.txt', 'w') as f:
+              for line in lines:
+                  m = re.match(r'([A-Za-z0-9._-]+)==\S+$', line.strip())
+                  f.write(f'{m.group(1)}=={version(m.group(1))}\n' if m else line + '\n')
+          PY
       - name: Generate Pull Request Description
         env:
           BODY_PATH: ${{ runner.temp }}/pr_body.md
         run: |
-          ROWS=$(git diff --unified=0 -- python/requirements.lock \
-            | grep -E '^[+-][A-Za-z0-9]' \
-            | sed -E 's/^(.)/\1 /; s/==/ /' \
-            | awk '{ if ($1 == "-") before[$2] = $3; else after[$2] = $3 }
-              END {
-                for (name in after) {
-                  if (name in before) {
-                    if (before[name] != after[name]) print "|" name " |" before[name] " |" after[name] " |Updated |"
-                    delete before[name]
-                  } else {
-                    print "|" name " |- |" after[name] " |Added |"
-                  }
-                }
-                for (name in before) print "|" name " |" before[name] " |- |Removed |"
-              }' \
-            | sort)
-          if [ -z "$ROWS" ]; then ROWS='| | | |No dependency changes detected |'; fi
-          cat > "$BODY_PATH" <<EOF
+          {
+            cat <<'OVERVIEW'
           ## 1. Overview
 
           This pull request was created automatically by the Python - Daily Dependencies Update workflow.
-          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, and regenerates requirements.lock:
+          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, regenerates requirements.lock, and mirrors the updated versions to requirements.txt:
 
           ~~~console
           pip install --upgrade pip
-          pip install -r requirements.txt --upgrade
+          sed -E 's/==.*//' requirements.txt | xargs pip install --upgrade
           pip freeze > requirements.lock
           ~~~
 
           ## 2. Key Changes & Differences
-
-          |Libraries |Before |After |Changes & Differences |
-          |:-|:-|:-|:-|
-          $ROWS
+          OVERVIEW
+            echo
+            bash .github/scripts/dependency_report.sh pip python/requirements.lock python/requirements.txt Libraries
+            cat <<SUMMARY
 
           ## 3. Summary
 
-          All pip library dependencies in python/requirements.lock are now up to date.
+          All pip library dependencies in python/requirements.txt and python/requirements.lock are now up to date.
           Please make sure that all CI workflows pass before merging this pull request.
 
           ## 4. References
 
           - [Python - Daily Dependencies Update workflow run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)
           - [pip install documentation](https://pip.pypa.io/en/stable/cli/pip_install/)
-          EOF
+          SUMMARY
+          } > "$BODY_PATH"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
           branch: daily/python-dependency-updates
           delete-branch: true
+          add-paths: |
+            python/requirements.txt
+            python/requirements.lock
           commit-message: "[Daily][Python] Update pip Library Dependencies"
           title: "[Daily][Python] Update pip Library Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
           reviewers: hayat01sh1da
-          assignees: github-actions[bot]
+          assignees: hayat01sh1da
