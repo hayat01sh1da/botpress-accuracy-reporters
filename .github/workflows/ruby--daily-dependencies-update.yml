@@ -19,8 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ./.github/actions/setup-ruby
+        with:
+          job-name: update_gem_dependencies
       - name: Update Gem Dependencies
         working-directory: ./ruby
         env:

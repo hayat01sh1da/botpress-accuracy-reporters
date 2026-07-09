@@ -19,10 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version-file: .python-version
+      - uses: ./.github/actions/setup-python
       - name: Update pip Library Dependencies
         working-directory: ./python
         run: |
