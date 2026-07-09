@@ -29,6 +29,16 @@ jobs:
           gem install bundler
           bundle update --all
           bundle exec rbs collection update
+      - name: Mirror Updated Versions to Gemfile
+        working-directory: ./ruby-on-rails
+        run: |
+          ruby <<'RUBY'
+          versions = File.read('Gemfile.lock').scan(/^    (\S+) \((\d+(?:\.\d+)*)\)$/).to_h
+          gemfile = File.read('Gemfile').gsub(/^(\s*gem '([^']+)', )'~> [^']+'/) do
+            versions[$2] ? "#{$1}'~> #{versions[$2]}'" : $~[0]
+          end
+          File.write('Gemfile', gemfile)
+          RUBY
       - name: Generate Pull Request Description
         env:
           BODY_PATH: ${{ runner.temp }}/pr_body.md
@@ -54,7 +64,7 @@ jobs:
           ## 1. Overview
 
           This pull request was created automatically by the Ruby on Rails - Daily Dependencies Update workflow.
-          It upgrades RubyGems and Bundler, updates every gem to the latest version allowed by the Gemfile, and updates the RBS collection:
+          It upgrades RubyGems and Bundler, updates every gem to the latest version allowed by the Gemfile, updates the RBS collection, and mirrors the updated versions to the Gemfile:
 
           ~~~console
           gem update --system
@@ -71,7 +81,7 @@ jobs:
 
           ## 3. Summary
 
-          All gem dependencies in ruby-on-rails/Gemfile.lock and the RBS collection (rbs_collection.lock.yaml) are now up to date.
+          All gem dependencies in ruby-on-rails/Gemfile, ruby-on-rails/Gemfile.lock, and the RBS collection (rbs_collection.lock.yaml) are now up to date.
           Please make sure that all CI workflows pass before merging this pull request.
 
           ## 4. References
@@ -85,6 +95,10 @@ jobs:
         with:
           branch: daily/ruby-on-rails-dependency-updates
           delete-branch: true
+          add-paths: |
+            ruby-on-rails/Gemfile
+            ruby-on-rails/Gemfile.lock
+            ruby-on-rails/rbs_collection.lock.yaml
           commit-message: "[Daily][Ruby on Rails] Update Gem Dependencies"
           title: "[Daily][Ruby on Rails] Update Gem Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md

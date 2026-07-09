@@ -30,6 +30,16 @@ jobs:
           gem update --system
           gem install bundler
           bundle update --all
+      - name: Mirror Updated Versions to Gemfile
+        working-directory: ./ruby
+        run: |
+          ruby <<'RUBY'
+          versions = File.read('Gemfile.lock').scan(/^    (\S+) \((\d+(?:\.\d+)*)\)$/).to_h
+          gemfile = File.read('Gemfile').gsub(/^(\s*gem '([^']+)', )'~> [^']+'/) do
+            versions[$2] ? "#{$1}'~> #{versions[$2]}'" : $~[0]
+          end
+          File.write('Gemfile', gemfile)
+          RUBY
       - name: Generate Pull Request Description
         env:
           BODY_PATH: ${{ runner.temp }}/pr_body.md
@@ -55,7 +65,7 @@ jobs:
           ## 1. Overview
 
           This pull request was created automatically by the Ruby - Daily Dependencies Update workflow.
-          It upgrades RubyGems and Bundler, and updates every gem to the latest version allowed by the Gemfile:
+          It upgrades RubyGems and Bundler, updates every gem to the latest version allowed by the Gemfile, and mirrors the updated versions to the Gemfile:
 
           ~~~console
           gem update --system
@@ -71,7 +81,7 @@ jobs:
 
           ## 3. Summary
 
-          All gem dependencies in ruby/Gemfile.lock are now up to date.
+          All gem dependencies in ruby/Gemfile and ruby/Gemfile.lock are now up to date.
           Please make sure that all CI workflows pass before merging this pull request.
 
           ## 4. References
@@ -84,6 +94,9 @@ jobs:
         with:
           branch: daily/ruby-dependency-updates
           delete-branch: true
+          add-paths: |
+            ruby/Gemfile
+            ruby/Gemfile.lock
           commit-message: "[Daily][Ruby] Update Gem Dependencies"
           title: "[Daily][Ruby] Update Gem Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md

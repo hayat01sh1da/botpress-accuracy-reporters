@@ -24,8 +24,21 @@ jobs:
         working-directory: ./python
         run: |
           pip install --upgrade pip
-          pip install -r requirements.txt --upgrade
+          sed -E 's/==.*//' requirements.txt | xargs pip install --upgrade
           pip freeze > requirements.lock
+      - name: Mirror Updated Versions to requirements.txt
+        working-directory: ./python
+        run: |
+          python - <<'PY'
+          import re
+          from importlib.metadata import version
+          with open('requirements.txt') as f:
+              lines = f.read().splitlines()
+          with open('requirements.txt', 'w') as f:
+              for line in lines:
+                  m = re.match(r'([A-Za-z0-9._-]+)==\S+$', line.strip())
+                  f.write(f'{m.group(1)}=={version(m.group(1))}\n' if m else line + '\n')
+          PY
       - name: Generate Pull Request Description
         env:
           BODY_PATH: ${{ runner.temp }}/pr_body.md
@@ -51,11 +64,11 @@ jobs:
           ## 1. Overview
 
           This pull request was created automatically by the Python - Daily Dependencies Update workflow.
-          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, and regenerates requirements.lock:
+          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, regenerates requirements.lock, and mirrors the updated versions to requirements.txt:
 
           ~~~console
           pip install --upgrade pip
-          pip install -r requirements.txt --upgrade
+          sed -E 's/==.*//' requirements.txt | xargs pip install --upgrade
           pip freeze > requirements.lock
           ~~~
 
@@ -67,7 +80,7 @@ jobs:
 
           ## 3. Summary
 
-          All pip library dependencies in python/requirements.lock are now up to date.
+          All pip library dependencies in python/requirements.txt and python/requirements.lock are now up to date.
           Please make sure that all CI workflows pass before merging this pull request.
 
           ## 4. References
@@ -80,6 +93,9 @@ jobs:
         with:
           branch: daily/python-dependency-updates
           delete-branch: true
+          add-paths: |
+            python/requirements.txt
+            python/requirements.lock
           commit-message: "[Daily][Python] Update pip Library Dependencies"
           title: "[Daily][Python] Update pip Library Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
