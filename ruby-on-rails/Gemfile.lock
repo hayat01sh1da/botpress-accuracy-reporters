@@ -328,7 +328,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (~> 1.24.6)
-  brakeman (~> 8.0.4)
+  brakeman (~> 8.0.5)
   cgi (~> 0.5.2)
   csv (~> 3.3.5)
   debug
@@ -341,8 +341,8 @@ DEPENDENCIES
   rbs_rails (~> 0.13.1)
   rexml (~> 3.4.4)
   rspec-rails (~> 8.0.4)
-  rubocop (~> 1.88.1)
-  rubocop-performance (~> 1.26.0)
+  rubocop (~> 1.88.2)
+  rubocop-performance (~> 1.26.1)
   rubocop-rails (~> 2.35.5)
   rubocop-rspec (~> 3.10.2)
   rubocop-rspec_rails (~> 2.32.0)
