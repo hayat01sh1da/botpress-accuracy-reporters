@@ -106,7 +106,7 @@ PLATFORMS
 
 DEPENDENCIES
   rbs-inline (~> 0.14.0)
-  rubocop (~> 1.88.1)
+  rubocop (~> 1.88.2)
   rubocop-minitest (~> 0.39.1)
   rubocop-performance (~> 1.26.1)
   steep (~> 2.0.0)
