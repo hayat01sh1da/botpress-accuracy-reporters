@@ -78,7 +78,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
-          branch: daily/ruby-on-rails-dependency-updates
+          branch: hayat01sh1da/daily/ruby-on-rails/update-gem-dependencies
           delete-branch: true
           add-paths: |
             ruby-on-rails/Gemfile
