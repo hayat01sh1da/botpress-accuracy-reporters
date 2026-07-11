@@ -12,7 +12,9 @@
 # Parses `git diff` of the lockfile and prints a markdown table describing each
 # changed dependency: the semver level of the change, the package's summary
 # fetched from its registry (PyPI / RubyGems / npm), and whether it is a direct
-# or transitive dependency.
+# or transitive dependency. Package-manager updates are reported too: pip as a
+# regular requirements.lock entry, bundler from the lockfile's BUNDLED WITH
+# section, and pnpm from the manifest's packageManager field.
 set -euo pipefail
 
 ecosystem=$1
@@ -90,6 +92,44 @@ while IFS= read -r line; do
   fi
 done < <(git diff --unified=0 -- "$lockfile")
 
+# bundler and pnpm versions live outside the dependency stanzas parsed above:
+# bundler in the lockfile's BUNDLED WITH section and pnpm in the manifest's
+# packageManager field. pip needs no extra handling here because it is a
+# regular requirements.lock entry.
+bundled_with() {
+  awk 'prev == "BUNDLED WITH" { print $1; exit } { prev = $0 }'
+}
+
+pinned_pnpm() {
+  jq -r '.packageManager // empty' 2>/dev/null | sed -E 's/^[^@]+@//; s/\+.*$//'
+}
+
+manager_before=''
+manager_after=''
+case $ecosystem in
+  pip)
+    manager=pip
+    ;;
+  gem)
+    manager=bundler
+    if head_file=$(git show "HEAD:$lockfile" 2>/dev/null); then
+      manager_before=$(bundled_with <<<"$head_file" || true)
+      manager_after=$(bundled_with < "$lockfile" || true)
+    fi
+    ;;
+  *)
+    manager=pnpm
+    if head_file=$(git show "HEAD:$manifest" 2>/dev/null); then
+      manager_before=$(pinned_pnpm <<<"$head_file" || true)
+      manager_after=$(pinned_pnpm < "$manifest" || true)
+    fi
+    ;;
+esac
+if [ "$manager_before" != "$manager_after" ]; then
+  if [ -n "$manager_before" ]; then before[$manager]=$manager_before; fi
+  if [ -n "$manager_after" ]; then after[$manager]=$manager_after; fi
+fi
+
 if [ -f "$manifest" ]; then
   case $ecosystem in
     pip)
@@ -128,12 +168,14 @@ while IFS= read -r name; do
   if [ "$ecosystem" = 'pip' ]; then
     normalised=$(tr 'A-Z_' 'a-z-' <<<"$name")
   fi
-  if [ -n "${direct[$normalised]:-}" ]; then
-    kind='Direct'
+  if [ "$name" = "$manager" ]; then
+    kind='Package manager.'
+  elif [ -n "${direct[$normalised]:-}" ]; then
+    kind='Direct dependency.'
   else
-    kind='Transitive'
+    kind='Transitive dependency.'
   fi
-  notes="${what}. ${description:+$description }${kind} dependency."
+  notes="${what}. ${description:+$description }${kind}"
   old_cell=${old:+\`$old\`}
   new_cell=${new:+\`$new\`}
   rows+="|\`${name}\` |${old_cell:--} |${new_cell:--} |${notes} |"$'\n'
