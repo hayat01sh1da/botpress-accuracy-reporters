@@ -26,6 +26,7 @@ jobs:
           pip install --upgrade pip
           sed -E 's/==.*//' requirements.txt | xargs pip install --upgrade
           pip freeze > requirements.lock
+          pip --version | awk '{print "pip==" $2}' >> requirements.lock
       - name: Mirror Updated Versions to requirements.txt
         working-directory: ./python
         run: |
@@ -48,12 +49,13 @@ jobs:
           ## 1. Overview
 
           This pull request was created automatically by the Python - Daily Dependencies Update workflow.
-          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, regenerates requirements.lock, and mirrors the updated versions to requirements.txt:
+          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, regenerates requirements.lock (which also records the pip version), and mirrors the updated versions to requirements.txt:
 
           ~~~console
           pip install --upgrade pip
           sed -E 's/==.*//' requirements.txt | xargs pip install --upgrade
           pip freeze > requirements.lock
+          pip --version | awk '{print "pip==" $2}' >> requirements.lock
           ~~~
 
           ## 2. Key Changes & Differences
