@@ -29,6 +29,7 @@ jobs:
         run: |
           gem update --system
           gem install bundler
+          bundle update --bundler
           bundle update --all
       - name: Mirror Updated Versions to Gemfile
         working-directory: ./ruby
@@ -54,6 +55,7 @@ jobs:
           ~~~console
           gem update --system
           gem install bundler
+          bundle update --bundler
           bundle update --all
           ~~~
 
@@ -77,7 +79,8 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
-          branch: daily/ruby-dependency-updates
+          sign-commits: true
+          branch: hayat01sh1da/daily/ruby/update-gem-dependencies
           delete-branch: true
           add-paths: |
             ruby/Gemfile
