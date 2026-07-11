@@ -76,6 +76,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
+          sign-commits: true
           branch: hayat01sh1da/daily/python/update-pip-library-dependencies
           delete-branch: true
           add-paths: |
