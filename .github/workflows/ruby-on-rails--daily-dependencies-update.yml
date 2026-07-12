@@ -89,7 +89,7 @@ jobs:
             ruby-on-rails/Gemfile.lock
             ruby-on-rails/rbs_collection.lock.yaml
           commit-message: "[Daily][Ruby on Rails] Update Gem Dependencies"
-          title: "[Daily][Ruby on Rails] Update Gem Dependencies"
+          title: "[Daily][Ruby on Rails] Update RubyGems Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
           reviewers: hayat01sh1da
           assignees: hayat01sh1da
