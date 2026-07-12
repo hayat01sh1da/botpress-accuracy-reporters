@@ -73,6 +73,7 @@ jobs:
 
           - [Python - Daily Dependencies Update workflow run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)
           - [pip install documentation](https://pip.pypa.io/en/stable/cli/pip_install/)
+          - [PyPI](https://pypi.org/)
           SUMMARY
           } > "$BODY_PATH"
       - name: Create Pull Request

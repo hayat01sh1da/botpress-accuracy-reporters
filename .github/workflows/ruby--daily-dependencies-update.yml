@@ -74,6 +74,7 @@ jobs:
 
           - [Ruby - Daily Dependencies Update workflow run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)
           - [bundle update documentation](https://bundler.io/man/bundle-update.1.html)
+          - [RubyGems](https://rubygems.org/)
           SUMMARY
           } > "$BODY_PATH"
       - name: Create Pull Request
