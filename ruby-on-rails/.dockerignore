@@ -1,6 +1,13 @@
 Dockerfile
+Dockerfile.production
 .dockerignore
 .git
+.kamal
+
+# Never bake local environment files or credential keys into images
+.env*
+!.env.sample
+config/master.key
 
 log/*
 tmp/*
