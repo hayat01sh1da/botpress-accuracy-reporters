@@ -1,0 +1,42 @@
+# Kamal deployment configuration (https://kamal-deploy.org/docs/configuration/overview/).
+# First deploy: `kamal setup`. Subsequent deploys: `kamal deploy`. Run from WSL.
+service: botpress-accuracy-reporter
+
+# Pushed to ghcr.io (see registry below) as ghcr.io/hayat01sh1da/botpress-accuracy-reporter.
+image: hayat01sh1da/botpress-accuracy-reporter
+
+servers:
+  web:
+    - 203.0.113.10 # TODO: replace with the Oracle Cloud VM public IP
+
+# kamal-proxy terminates SSL with a Let's Encrypt certificate for this host.
+proxy:
+  ssl: true
+  host: botpress.example.com # TODO: replace with the real hostname (must resolve to the VM IP)
+  app_port: 3000
+
+registry:
+  server: ghcr.io
+  username: hayat01sh1da
+  # GitHub personal access token with write:packages, read via .kamal/secrets.
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  # Oracle Cloud Always Free VM.Standard.A1.Flex is ARM (aarch64).
+  arch: arm64
+  dockerfile: Dockerfile.production
+
+env:
+  clear:
+    HOST: botpress.example.com # TODO: keep in sync with proxy.host
+    BOT_ID: sample-bot # TODO: set the real Botpress bot id
+    USER_ID: oasist
+  secret:
+    - SECRET_KEY_BASE
+    - ACCESS_TOKEN
+
+aliases:
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f
