@@ -45,11 +45,11 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
-  # Replace the default in-process memory cache store with a durable alternative.
-  config.cache_store = :mem_cache_store
+  # Single-container Kamal deployment: no memcached on the host, so keep the in-process store.
+  config.cache_store = :memory_store
 
-  # Replace the default in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :resque
+  # Single-container Kamal deployment: no Redis/Resque on the host, so run jobs in-process.
+  config.active_job.queue_adapter = :async
 
   # Uncomment to enable locale fallbacks for I18n (makes lookups for any locale
   # fall back to the I18n.default_locale when a translation cannot be found).
