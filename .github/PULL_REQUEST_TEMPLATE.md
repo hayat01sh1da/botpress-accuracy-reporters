@@ -9,7 +9,7 @@ OVERVIEW PASSAGE N.
 
 ## 2. Key Changes & Differences
 
-|Gems |Before |After |Changes & Differences |
+|Code/Library/Package |Before |After |Changes & Differences |
 |:-|:-|:-|:-|
 | | | | |
 | | | | |
