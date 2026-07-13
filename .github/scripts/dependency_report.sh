@@ -12,9 +12,12 @@
 # Parses `git diff` of the lockfile and prints a markdown table describing each
 # changed dependency: the semver level of the change, the package's summary
 # fetched from its registry (PyPI / RubyGems / npm), and whether it is a direct
-# or transitive dependency. Package-manager updates are reported too: pip as a
-# regular requirements.lock entry, bundler from the lockfile's BUNDLED WITH
-# section, and pnpm from the manifest's packageManager field.
+# or transitive dependency. Each dependency name links to its page on the
+# official registry (https://rubygems.org / https://pypi.org /
+# https://www.npmjs.com) so reviewers can check release notes and changelogs.
+# Package-manager updates are reported too: pip as a regular requirements.lock
+# entry, bundler from the lockfile's BUNDLED WITH section, and pnpm from the
+# manifest's packageManager field.
 set -euo pipefail
 
 ecosystem=$1
@@ -176,9 +179,14 @@ while IFS= read -r name; do
     kind='Transitive dependency.'
   fi
   notes="${what}. ${description:+$description }${kind}"
+  case $ecosystem in
+    pip) registry_url="https://pypi.org/project/${normalised}/" ;;
+    gem) registry_url="https://rubygems.org/gems/${name}" ;;
+    *)   registry_url="https://www.npmjs.com/package/${name}" ;;
+  esac
   old_cell=${old:+\`$old\`}
   new_cell=${new:+\`$new\`}
-  rows+="|\`${name}\` |${old_cell:--} |${new_cell:--} |${notes} |"$'\n'
+  rows+="|[\`${name}\`](${registry_url}) |${old_cell:--} |${new_cell:--} |${notes} |"$'\n'
 done < <(printf '%s\n' "${!before[@]}" "${!after[@]}" | sort -fu)
 
 echo "|${label} |Before |After |Changes & Differences |"

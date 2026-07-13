@@ -73,19 +73,23 @@ jobs:
 
           - [Python - Daily Dependencies Update workflow run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)
           - [pip install documentation](https://pip.pypa.io/en/stable/cli/pip_install/)
+          - [PyPI](https://pypi.org/)
           SUMMARY
           } > "$BODY_PATH"
+      - name: Compute Timestamp
+        run: echo "TIMESTAMP=$(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S JST')" >> "$GITHUB_ENV"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
+
         with:
           sign-commits: true
-          branch: hayat01sh1da/daily/python/update-pip-library-dependencies
+          branch: hayat01sh1da/daily/python/update-pypi-library-dependencies
           delete-branch: true
           add-paths: |
             python/requirements.txt
             python/requirements.lock
-          commit-message: "[Daily][Python] Update pip Library Dependencies"
-          title: "[Daily][Python] Update pip Library Dependencies"
+          commit-message: "[Daily][Python] Update PyPI library dependencies at ${{ env.TIMESTAMP }}"
+          title: "[Daily][Python] Update PyPI Library Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
           reviewers: hayat01sh1da
           assignees: hayat01sh1da
