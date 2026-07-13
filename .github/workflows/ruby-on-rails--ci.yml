@@ -65,7 +65,7 @@ jobs:
       rubocop-changes: ${{ steps.change-detection.outputs.rubocop}}
       steep-changes: ${{ steps.change-detection.outputs.steep}}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Change Detection
         uses: dorny/paths-filter@v4
         id: change-detection
@@ -117,7 +117,7 @@ jobs:
     needs: change-detection
     if: needs.change-detection.outputs.ruby-changes == 'true'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-ruby-on-rails
       - name: RSpec
         working-directory: ./ruby-on-rails
@@ -128,7 +128,7 @@ jobs:
     needs: change-detection
     if: needs.change-detection.outputs.ruby-changes == 'true'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-ruby-on-rails
       - name: Brakeman
         working-directory: ./ruby-on-rails
@@ -139,7 +139,7 @@ jobs:
     needs: change-detection
     if: needs.change-detection.outputs.rubocop-changes == 'true'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-ruby-on-rails
       - name: RuboCop
         working-directory: ./ruby-on-rails
@@ -150,7 +150,7 @@ jobs:
     needs: change-detection
     if: needs.change-detection.outputs.steep-changes == 'true'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-ruby-on-rails
       - name: Steep
         working-directory: ./ruby-on-rails
