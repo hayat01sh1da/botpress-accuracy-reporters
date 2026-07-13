@@ -77,6 +77,8 @@ jobs:
           - [RubyGems](https://rubygems.org/)
           SUMMARY
           } > "$BODY_PATH"
+      - name: Compute Timestamp
+        run: echo "TIMESTAMP=$(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S JST')" >> "$GITHUB_ENV"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
@@ -86,7 +88,7 @@ jobs:
           add-paths: |
             ruby/Gemfile
             ruby/Gemfile.lock
-          commit-message: "[Daily][Ruby] Update Gem Dependencies"
+          commit-message: "[Daily][Ruby] Update RubyGems dependencies at ${{ env.TIMESTAMP }}"
           title: "[Daily][Ruby] Update RubyGems Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
           reviewers: hayat01sh1da
