@@ -18,6 +18,10 @@
 # Package-manager updates are reported too: pip as a regular requirements.lock
 # entry, bundler from the lockfile's BUNDLED WITH section, and pnpm from the
 # manifest's packageManager field.
+# For gems, changes to the version requirements in the lockfile's DEPENDENCIES
+# section are also reported, so a diff that only tightens requirements (e.g.
+# `minitest (~> 5.25)` -> `minitest (~> 5.27.0)`) is never summarised as
+# "No dependency changes detected".
 set -euo pipefail
 
 ecosystem=$1
@@ -73,22 +77,37 @@ level() {
   printf 'Patch-level update'
 }
 
-declare -A before after direct
+declare -A before after req_before req_after direct
 
 while IFS= read -r line; do
+  requirement=''
   case $ecosystem in
     pip)
       [[ $line =~ ^([+-])([A-Za-z0-9][A-Za-z0-9._-]*)==([^[:space:]]+)$ ]] || continue
       ;;
     gem)
-      [[ $line =~ ^([+-])\ {4}([^\ ]+)\ \(([0-9][^\)]*)\)$ ]] || continue
+      # 4-space indent: resolved versions in the specs section. 2-space indent:
+      # version requirements in the DEPENDENCIES section (mirrors the Gemfile).
+      if [[ $line =~ ^([+-])\ {4}([^\ ]+)\ \(([0-9][^\)]*)\)$ ]]; then
+        :
+      elif [[ $line =~ ^([+-])\ \ ([^\ ]+)\ \(([^\)]+)\)$ ]]; then
+        requirement=1
+      else
+        continue
+      fi
       ;;
     *)
       [[ $line == *'('* ]] && continue
       [[ $line =~ ^([+-])\ \ \'?(.+)@([0-9][^\':]*)\'?:?$ ]] || continue
       ;;
   esac
-  if [ "${BASH_REMATCH[1]}" = '-' ]; then
+  if [ -n "$requirement" ]; then
+    if [ "${BASH_REMATCH[1]}" = '-' ]; then
+      req_before[${BASH_REMATCH[2]}]=${BASH_REMATCH[3]}
+    else
+      req_after[${BASH_REMATCH[2]}]=${BASH_REMATCH[3]}
+    fi
+  elif [ "${BASH_REMATCH[1]}" = '-' ]; then
     before[${BASH_REMATCH[2]}]=${BASH_REMATCH[3]}
   else
     after[${BASH_REMATCH[2]}]=${BASH_REMATCH[3]}
@@ -158,13 +177,21 @@ while IFS= read -r name; do
   [ -n "$name" ] || continue
   old=${before[$name]:-}
   new=${after[$name]:-}
-  [ "$old" = "$new" ] && continue
-  if [ -n "$old" ] && [ -n "$new" ]; then
-    what=$(level "$old" "$new")
-  elif [ -n "$new" ]; then
-    what='Newly added'
+  if [ "$old" != "$new" ]; then
+    if [ -n "$old" ] && [ -n "$new" ]; then
+      what=$(level "$old" "$new")
+    elif [ -n "$new" ]; then
+      what='Newly added'
+    else
+      what='Removed'
+    fi
   else
-    what='Removed'
+    # No resolved-version change: report a requirement-only change (gem), e.g.
+    # the lockfile's DEPENDENCIES section catching up with the Gemfile.
+    old=${req_before[$name]:-}
+    new=${req_after[$name]:-}
+    [ "$old" = "$new" ] && continue
+    what='Version requirement update'
   fi
   description=$(clean "$(describe "$name")")
   normalised=$name
@@ -187,7 +214,7 @@ while IFS= read -r name; do
   old_cell=${old:+\`$old\`}
   new_cell=${new:+\`$new\`}
   rows+="|[\`${name}\`](${registry_url}) |${old_cell:--} |${new_cell:--} |${notes} |"$'\n'
-done < <(printf '%s\n' "${!before[@]}" "${!after[@]}" | sort -fu)
+done < <(printf '%s\n' "${!before[@]}" "${!after[@]}" "${!req_before[@]}" "${!req_after[@]}" | sort -fu)
 
 echo "|${label} |Before |After |Changes & Differences |"
 echo '|:-|:-|:-|:-|'
