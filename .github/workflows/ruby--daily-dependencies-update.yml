@@ -33,6 +33,8 @@ jobs:
           bundle update --all
       - name: Mirror Updated Versions to Gemfile
         working-directory: ./ruby
+        env:
+          BUNDLE_FROZEN: "false"
         run: |
           ruby <<'RUBY'
           versions = File.read('Gemfile.lock').scan(/^    (\S+) \((\d+(?:\.\d+)*)\)$/).to_h
@@ -41,6 +43,7 @@ jobs:
           end
           File.write('Gemfile', gemfile)
           RUBY
+          bundle lock --add-checksums
       - name: Generate Pull Request Description
         env:
           BODY_PATH: ${{ runner.temp }}/pr_body.md
@@ -50,7 +53,7 @@ jobs:
           ## 1. Overview
 
           This pull request was created automatically by the Ruby - Daily Dependencies Update workflow.
-          It upgrades RubyGems and Bundler, updates every gem to the latest version allowed by the Gemfile, and mirrors the updated versions to the Gemfile:
+          It upgrades RubyGems and Bundler, updates every gem to the latest version allowed by the Gemfile, mirrors the updated versions to the Gemfile, and re-locks Gemfile.lock so its DEPENDENCIES section stays in sync with the Gemfile:
 
           ~~~console
           gem update --system
