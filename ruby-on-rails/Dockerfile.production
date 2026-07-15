@@ -2,7 +2,7 @@
 
 # Production image built and deployed by Kamal (see config/deploy.yml).
 # Development keeps using ./Dockerfile via docker-compose.yml.
-ARG RUBY_VERSION=4.0.5
+ARG RUBY_VERSION=4.0.6
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 
 WORKDIR /app
