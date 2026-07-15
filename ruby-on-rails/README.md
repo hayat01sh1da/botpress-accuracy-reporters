@@ -1,9 +1,9 @@
 ## 1. Environment
 
 - Rails 8.1.2
-- Ruby 4.0.5
-- Gemfile 4.0.12
-- Bundler 4.0.12
+- Ruby 4.0.6
+- Gemfile 4.0.16
+- Bundler 4.0.16
 - Docker 29.6.1
 
 ## 2. Setup Docker
