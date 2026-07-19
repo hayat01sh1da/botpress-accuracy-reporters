@@ -4,7 +4,7 @@
 # Usage:
 #     dependency_report.sh <ecosystem> <lockfile> <manifest> <label>
 #
-#     ecosystem  pip | gem | pnpm
+#     ecosystem  PyPI | RubyGems | npm
 #     lockfile   path to requirements.lock / Gemfile.lock / pnpm-lock.yaml
 #     manifest   path to requirements.txt / Gemfile / package.json
 #     label      first column heading (Libraries / Gems / Packages)
