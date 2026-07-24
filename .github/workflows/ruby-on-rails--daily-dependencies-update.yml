@@ -52,7 +52,7 @@ jobs:
           ## 1. Overview
 
           This pull request was created automatically by the Ruby on Rails - Daily Dependencies Update workflow.
-          It upgrades RubyGems and Bundler, updates every gem to the latest version allowed by the Gemfile, updates the RBS collection, mirrors the updated versions to the Gemfile, and re-locks Gemfile.lock so its DEPENDENCIES section stays in sync with the Gemfile:
+          It upgrades RubyGems and Bundler, updates every gem to the latest version allowed by the Gemfile, updates the RBS collection, mirrors the updated versions to the Gemfile, mirrors the new Bundler version to the Environment section of every README.md, and re-locks Gemfile.lock so its DEPENDENCIES section stays in sync with the Gemfile:
 
           ~~~console
           gem update --system
@@ -93,6 +93,8 @@ jobs:
             ruby-on-rails/Gemfile
             ruby-on-rails/Gemfile.lock
             ruby-on-rails/rbs_collection.lock.yaml
+            README.md
+            ruby-on-rails/README.md
           commit-message: "[Daily][Ruby on Rails] Update RubyGems dependencies at ${{ env.TIMESTAMP }}"
           title: "[Daily][Ruby on Rails] Update RubyGems Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
