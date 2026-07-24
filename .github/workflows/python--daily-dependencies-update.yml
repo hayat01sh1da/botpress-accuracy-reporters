@@ -49,7 +49,7 @@ jobs:
           ## 1. Overview
 
           This pull request was created automatically by the Python - Daily Dependencies Update workflow.
-          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, regenerates requirements.lock (which also records the pip version), and mirrors the updated versions to requirements.txt:
+          It upgrades pip itself, upgrades every library listed in requirements.txt to the latest available versions, regenerates requirements.lock (which also records the pip version), mirrors the updated versions to requirements.txt, and mirrors the new pip version to the Environment section of every README.md:
 
           ~~~console
           pip install --upgrade pip
@@ -88,6 +88,8 @@ jobs:
           add-paths: |
             python/requirements.txt
             python/requirements.lock
+            README.md
+            python/README.md
           commit-message: "[Daily][Python] Update PyPI library dependencies at ${{ env.TIMESTAMP }}"
           title: "[Daily][Python] Update PyPI Library Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
