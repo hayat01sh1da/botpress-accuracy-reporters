@@ -20,7 +20,7 @@ gem 'rexml', '~> 3.4.4'
 gem 'bootsnap', '~> 1.24.6', require: false
 
 # CSV
-gem 'csv', '~> 3.3.5'
+gem 'csv', '~> 3.3.6'
 
 # Data structure, similar to a Hash, that allows the definition of arbitrary attributes with their accompanying values
 gem 'ostruct', '~> 0.6.3'
