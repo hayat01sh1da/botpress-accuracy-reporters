@@ -45,7 +45,7 @@ group :development do
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem 'rack-mini-profiler', '~> 4.0.1'
   # Static code analysis for security vulnerabilities
-  gem 'brakeman', '~> 8.0.5', require: false
+  gem 'brakeman', '~> 8.0.6', require: false
   # RuboCop
   gem 'rubocop', '~> 1.88.2', require: false
   gem 'rubocop-performance', '~> 1.26.1', require: false
