@@ -2,8 +2,8 @@
 
 - Rails 8.1.3.1
 - Ruby 4.0.6
-- Gemfile 4.0.19
-- Bundler 4.0.19
+- Gemfile 4.0.20
+- Bundler 4.0.20
 - Docker 29.7.2
 
 ## 2. Setup Docker
