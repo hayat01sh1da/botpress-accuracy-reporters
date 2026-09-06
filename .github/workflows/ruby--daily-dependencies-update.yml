@@ -97,5 +97,4 @@ jobs:
           commit-message: "[Daily][Ruby] Update RubyGems dependencies at ${{ env.TIMESTAMP }}"
           title: "[Daily][Ruby] Update RubyGems Dependencies"
           body-path: ${{ runner.temp }}/pr_body.md
-          reviewers: hayat01sh1da
           assignees: hayat01sh1da
