@@ -4,7 +4,7 @@
 - Ruby 4.0.6
 - Gemfile 4.1.0.beta1
 - Bundler 4.1.0.beta1
-- Docker 29.7.2
+- Docker 29.8.0
 
 ## 2. Setup Docker
 
