@@ -17,7 +17,7 @@ gem 'dotenv-rails', '~> 3.2.0'
 gem 'rexml', '~> 3.4.4'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.24.6', require: false
+gem 'bootsnap', '~> 1.26.0', require: false
 
 # CSV
 gem 'csv', '~> 3.3.6'
@@ -45,17 +45,17 @@ group :development do
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem 'rack-mini-profiler', '~> 4.0.1'
   # Static code analysis for security vulnerabilities
-  gem 'brakeman', '~> 8.0.6', require: false
+  gem 'brakeman', '~> 8.1.0', require: false
   # RuboCop
-  gem 'rubocop', '~> 1.88.2', require: false
-  gem 'rubocop-performance', '~> 1.26.1', require: false
-  gem 'rubocop-rails', '~> 2.35.5', require: false
+  gem 'rubocop', '~> 1.91.0', require: false
+  gem 'rubocop-performance', '~> 1.27.0', require: false
+  gem 'rubocop-rails', '~> 2.38.0', require: false
   gem 'rubocop-rspec', '~> 3.10.2', require: false
   gem 'rubocop-rspec_rails', '~> 2.32.0', require: false
   # Typechecking
   gem 'rbs-inline', '~> 0.14.0', require: false
   gem 'rbs_rails', '~> 0.13.1', require: false
-  gem 'steep', '~> 2.0.0', require: false
+  gem 'steep', '~> 2.1.0', require: false
 end
 
 group :test do
