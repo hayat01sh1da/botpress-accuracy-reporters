@@ -1,6 +1,6 @@
 ## 1. Environment
 
-- Rails 8.1.3.1
+- Rails 8.1.4
 - Ruby 4.0.7
 - Gemfile 4.1.0.beta1
 - Bundler 4.1.0.beta1
