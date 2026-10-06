@@ -1,7 +1,7 @@
 ## 1. Environment
 
 - Rails 8.1.3.1
-- Ruby 4.0.6
+- Ruby 4.0.7
 - Gemfile 4.1.0.beta1
 - Bundler 4.1.0.beta1
 - Docker 29.8.2
