@@ -26,7 +26,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Rails.root.glob('spec/helpers/**/*.rb').each { |f| require f }
+Rails.root.glob('spec/helpers/**/*.rb').each { |f| require f.to_s }
 
 RSpec.configure do |config|
   # RSpec Rails can automatically mix in different behaviours to your tests
