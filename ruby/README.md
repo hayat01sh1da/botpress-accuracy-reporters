@@ -1,6 +1,6 @@
 ## 1. Environment
 
-- Ruby 4.0.9
+- Ruby 4.0.10
 - Gemfile 4.1.0.beta1
 - Bundler 4.1.0.beta1
 
