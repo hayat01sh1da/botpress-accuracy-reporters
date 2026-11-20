@@ -1,4 +1,4 @@
-FROM ruby:4.0.9
+FROM ruby:4.0.10
 
 # Packages
 RUN apt-get update && apt-get install -y curl build-essential libpq-dev libvips libvips-dev vim tree
