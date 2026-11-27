@@ -272,10 +272,9 @@ GEM
       rack (>= 1.1)
       rubocop (>= 1.89.0, < 2.0)
       rubocop-ast (>= 1.44.0, < 2.0)
-    rubocop-rspec (3.10.2)
+    rubocop-rspec (3.11.0)
       lint_roller (~> 1.1)
-      regexp_parser (>= 2.0)
-      rubocop (~> 1.86, >= 1.86.2)
+      rubocop (~> 1.92)
     rubocop-rspec_rails (2.33.0)
       lint_roller (~> 1.1)
       rubocop (~> 1.89)
@@ -323,7 +322,7 @@ GEM
       actionview (>= 8.0.0)
       bindex (>= 0.4.0)
       railties (>= 8.0.0)
-    websocket-driver (0.9.0)
+    websocket-driver (0.9.1)
       base64
       websocket-extensions (>= 0.2.0)
     websocket-extensions (0.3.0)
@@ -351,7 +350,7 @@ DEPENDENCIES
   rubocop (~> 1.93.0)
   rubocop-performance (~> 1.27.0)
   rubocop-rails (~> 2.38.0)
-  rubocop-rspec (~> 3.10.2)
+  rubocop-rspec (~> 3.11.0)
   rubocop-rspec_rails (~> 2.33.0)
   sprockets-rails (~> 3.5.2)
   steep (~> 2.1.0)
@@ -455,7 +454,7 @@ CHECKSUMS
   rubocop-ast (1.54.0) sha256=11f7cadec54e593e905b1bb78f2b28bdd4b8e13b34cb82fe49c876e3dd5008c1
   rubocop-performance (1.27.0) sha256=eeeb1374d062a368ee1c787b70eb0b0cc4b184cb1f8565f424760946146d61ce
   rubocop-rails (2.38.0) sha256=6e2b7c532efa95e3050371bec20b8f5b025662acead8bc70ee31f0e3e6fa2f06
-  rubocop-rspec (3.10.2) sha256=0b3e2ecc592cd10ecbf0095bb58d1e357905276e069643523cc19eb7495f65e2
+  rubocop-rspec (3.11.0) sha256=3be37ecf0330634f4e53e0491ed71424daf004e33120bb6c7c5e17d67267c091
   rubocop-rspec_rails (2.33.0) sha256=669e0a7a9a5fca6d6ccaf853ac65b5b8bdfde3519f604616f2c5278cbf565689
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
@@ -473,7 +472,7 @@ CHECKSUMS
   uri (1.1.2) sha256=89292e98eabbef6248b0a0ed5e7e398e152f83f17560023a6d94a7f492b169fb
   useragent (0.16.11) sha256=700e6413ad4bb954bb63547fa098dddf7b0ebe75b40cc6f93b8d54255b173844
   web-console (4.3.0) sha256=e13b71301cdfc2093f155b5aa3a622db80b4672d1f2f713119cc7ec7ac6a6da4
-  websocket-driver (0.9.0) sha256=4dfcc6ac0ea1b6771daf5fb54cbbca131e4d5922ea0a65ba2da980370dadbe9f
+  websocket-driver (0.9.1) sha256=8b6c5c0834f77f53b86d486cc761c99d60df807a8264267ea52fca0da660bb1e
   websocket-extensions (0.3.0) sha256=1492aabd79218294b564e67e9ee6a90abdac1a2981d35a49848bbc39754f0752
   zeitwerk (2.8.3) sha256=2c85125a8467ce069e20123d1e709a08955c9d29c118c25b46b7b7fafdbb92e5
 
